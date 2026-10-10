@@ -1,12 +1,11 @@
-
-type ResultadoIR = {
+export type ResultadoIR = {
   rendimentoMensal: number;
   faixa: string;
   descontoPercentual: number;
   impostoDevido: number;
 };
 
-function calcularIR(
+export function calcularIR(
   rendimentoMensal: number,
   impostoAntesDoDesconto: number = 0,
 ): ResultadoIR {
@@ -47,6 +46,7 @@ function calcularIR(
   } else {
     faixa = "Acima de R$ 7.350,00";
     descontoPercentual = 0;
+
     impostoDevido = rendimentoMensal * 0.275;
   }
 
