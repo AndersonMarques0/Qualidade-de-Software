@@ -1,0 +1,28 @@
+{
+  "name": "qualidade-de-software",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest",
+    "test:run": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndersonMarques0/Qualidade-de-Software.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/AndersonMarques0/Qualidade-de-Software/issues"
+  },
+  "homepage": "https://github.com/AndersonMarques0/Qualidade-de-Software#readme",
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}
