@@ -22,6 +22,7 @@
   "homepage": "https://github.com/AndersonMarques0/Qualidade-de-Software#readme",
   "devDependencies": {
     "@types/node": "^26.6.5",
+    "@vitest/coverage-v8": "^5.0.3",
     "typescript": "^7.0.2",
     "vitest": "^5.0.3"
   }

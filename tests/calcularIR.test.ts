@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calcularIR } from "../src/impostoderenda";
+import { calcularIR } from "../src/impostoderenda.ts";
 
 describe("calcularIR - partições de equivalência", () => {
   it("C2: deve conceder isenção total até R$ 5.000", () => {
