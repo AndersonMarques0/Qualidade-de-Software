@@ -1,0 +1,94 @@
+@startuml efetuar_pedido_atividades
+title Diagrama de Atividades - UC Efetuar Pedido
+
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam ActivityBackgroundColor #FFFFFF
+skinparam ActivityBorderColor #333333
+skinparam ArrowColor #333333
+skinparam ConditionBackgroundColor #FFF3CD
+skinparam ConditionBorderColor #B8860B
+skinparam swimlaneTitleFontStyle bold
+
+|Cliente|
+start
+:1. Solicitar visualização do carrinho;
+
+|Sistema da Livraria|
+:2. Exibir livros adicionados e quantidades;
+
+if (Carrinho vazio?) then (sim)
+  #FFD9D9:Exceção 2: informar que não é possível\nprosseguir sem itens no carrinho;
+  stop
+else (não)
+endif
+
+|Cliente|
+:3. Confirmar pedido com base nas informações exibidas;
+
+|Sistema da Livraria|
+:4. Apresentar formulário de autenticação\ne identificar perfil do cliente;
+
+if (RN01: tempo de vínculo?) then (menos de 1 ano)
+  :Sem desconto (0%);
+elseif (1 a 3 anos) then (Bronze)
+  :Perfil Bronze - desconto de 3%;
+elseif (3 a 5 anos) then (Prata)
+  :Perfil Prata - desconto de 5%;
+else (mais de 5 anos)
+  :Perfil Ouro - desconto de 10%;
+endif
+
+|Cliente|
+:5. Informar dados do endereço de entrega e confirmar;
+
+|Sistema de Frete|
+if (RN02: região de entrega é Sudeste?) then (sim)
+  :Frete = 5% sobre o valor do pedido;
+else (não)
+  :Frete = 10% sobre o valor do pedido;
+endif
+
+|Sistema da Livraria|
+:6. Exibir valor do frete;
+
+|Cliente|
+:7. Selecionar forma de pagamento e preencher dados;
+
+|Sistema da Livraria|
+:8. Exibir total a pagar\n(subtotal - desconto + frete)\ne disponibilizar finalização do pedido;
+
+|Cliente|
+:9. Confirmar pedido;
+
+|Sistema da Livraria|
+if (RN03: forma de pagamento?) then (cartão de crédito)
+  |Sistema de Cartão|
+  :Autorizar pagamento com cartão de crédito;
+else (Pix)
+  |Sistema de Banco|
+  :Processar pagamento via Pix;
+endif
+
+|Sistema da Livraria|
+if (Pagamento autorizado?) then (sim)
+  :10. Registrar pedido com status Confirmado (RN04);
+  :Destruir itens do carrinho;
+  :Exibir confirmação do pedido;
+else (não)
+  #FFD9D9:Exceção 9: informar pagamento não autorizado;
+  :Pedido permanece Em processamento,\ncancelável após 2 dias;
+endif
+
+stop
+
+legend right
+  RN04 - Estados:
+  Pedido criado (inicial), Em processamento,
+  Confirmado, Cancelado, Entregue e Finalizado (final).
+
+  Cancelado e Entregue ocorrem após o término
+  do caso de uso.
+endlegend
+
+@enduml

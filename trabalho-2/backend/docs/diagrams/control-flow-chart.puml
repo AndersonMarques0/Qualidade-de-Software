@@ -1,0 +1,66 @@
+@startuml efetuar_pedido_gfc
+title GFC - UC Efetuar Pedido (V(G) = 8)
+
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam ArrowColor #333333
+skinparam circle {
+  BackgroundColor #FFFFFF
+  BorderColor #333333
+}
+
+circle "1" as N1
+circle "2" as N2 #FFF3CD
+circle "3" as N3
+circle "4" as N4
+circle "5" as N5 #FFF3CD
+circle "6" as N6
+circle "7" as N7
+circle "8" as N8
+circle "9" as N9
+circle "10" as N10
+circle "11" as N11 #FFF3CD
+circle "12" as N12
+circle "13" as N13
+circle "14" as N14
+circle "15" as N15 #FFF3CD
+circle "16" as N16
+circle "17" as N17
+circle "18" as N18 #FFF3CD
+circle "19" as N19
+circle "20" as N20
+circle "21" as N21 #E0E0E0
+
+N1 --> N2
+N2 --> N3 : V (vazio)
+N2 --> N4 : F
+N3 --> N21
+N4 --> N5
+N5 --> N6 : < 1 ano
+N5 --> N7 : 1 a 3 anos
+N5 --> N8 : 3 a 5 anos
+N5 --> N9 : > 5 anos
+N6 --> N10
+N7 --> N10
+N8 --> N10
+N9 --> N10
+N10 --> N11
+N11 --> N12 : V (Sudeste)
+N11 --> N13 : F (outras)
+N12 --> N14
+N13 --> N14
+N14 --> N15
+N15 --> N16 : Cartão
+N15 --> N17 : Pix
+N16 --> N18
+N17 --> N18
+N18 --> N19 : V (autorizado)
+N18 --> N20 : F (não autorizado)
+N19 --> N21
+N20 --> N21
+
+legend right
+  Nós amarelos = predicados (2, 5, 11, 15, 18)
+  Nó 21 = nó final (estado Finalizado)
+endlegend
+@enduml

@@ -1,0 +1,298 @@
+@startuml
+title Bookstore Backend - Diagrama de Classes
+
+left to right direction
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+
+package "Domain" {
+  enum CustomerProfile {
+    BRONZE
+    SILVER
+    GOLD
+  }
+
+  enum Region {
+    SOUTHEAST
+    OTHER
+  }
+
+  enum PaymentMethod {
+    CREDIT_CARD
+    PIX
+  }
+
+  enum PaymentStatus {
+    PENDING
+    APPROVED
+    DECLINED
+  }
+
+  enum OrderStatus {
+    CREATED
+    PROCESSING
+    CONFIRMED
+    CANCELLED
+    DELIVERED
+    FINISHED
+  }
+
+  class AppError {
+    +statusCode: number
+  }
+
+  class OrderStatusService {
+    +assertOrderTransition(current: OrderStatus, next: OrderStatus): void
+  }
+
+  interface PricingInput {
+    +subtotal: number
+    +yearsAsCustomer: number
+    +region: Region
+  }
+
+  interface PricingResult {
+    +profile: CustomerProfile
+    +discountRate: number
+    +discount: number
+    +shippingRate: number
+    +shipping: number
+    +total: number
+  }
+
+  class PricingService {
+    +getCustomerProfile(years: number): PricingResult
+    +calculatePricing(input: PricingInput): PricingResult
+  }
+
+  interface PaymentInput {
+    +method: PaymentMethod
+    +amount: number
+    +customerId: string
+    +cardId: string
+  }
+
+  interface CheckoutInput {
+    +region: Region
+    +paymentMethod: PaymentMethod
+    +cardId: string
+    +deliveryAddress: object
+  }
+}
+
+package "Models / Mongoose Schemas" {
+  class Bank {
+    +_id: ObjectId
+    +name: string
+    +code: string
+    +createdAt: Date
+    +updatedAt: Date
+  }
+
+  class Book {
+    +_id: ObjectId
+    +title: string
+    +author: string
+    +price: number
+    +stock: number
+    +createdAt: Date
+    +updatedAt: Date
+  }
+
+  class Customer {
+    +_id: ObjectId
+    +name: string
+    +email: string
+    +passwordHash: string
+    +createdAt: Date
+  }
+
+  class Card {
+    +_id: ObjectId
+    +customerId: ObjectId
+    +bankId: ObjectId
+    +holderName: string
+    +last4: string
+    +creditLimit: number
+    +availableLimit: number
+    +createdAt: Date
+    +updatedAt: Date
+  }
+
+  class Cart {
+    +_id: ObjectId
+    +customerId: ObjectId
+    +items: CartItem[]
+    +createdAt: Date
+    +updatedAt: Date
+  }
+
+  class CartItem <<embedded>> {
+    +bookId: ObjectId
+    +quantity: number
+  }
+
+  class Order {
+    +_id: ObjectId
+    +customerId: ObjectId
+    +items: OrderItem[]
+    +region: Region
+    +customerProfile: CustomerProfile
+    +subtotal: number
+    +discount: number
+    +shipping: number
+    +total: number
+    +paymentMethod: PaymentMethod
+    +paymentStatus: PaymentStatus
+    +status: OrderStatus
+    +paymentReference: string
+    +cardId: ObjectId
+    +cancellationDueAt: Date
+    +deliveryAddress: DeliveryAddress
+    +createdAt: Date
+    +updatedAt: Date
+  }
+
+  class OrderItem <<embedded>> {
+    +bookId: ObjectId
+    +title: string
+    +unitPrice: number
+    +quantity: number
+  }
+
+  class DeliveryAddress <<embedded>> {
+    +postalCode: string
+    +street: string
+    +number: string
+    +complement: string
+    +neighborhood: string
+    +city: string
+    +state: string
+  }
+}
+
+package "Application Services" {
+  class AuthService {
+    +register(input: object): Promise<object>
+    +login(input: object): Promise<object>
+  }
+
+  class BankService {
+    +list(): Promise<Bank[]>
+    +create(input: object): Promise<Bank>
+    +authorize(customerId: string, cardId: string, amount: number): Promise<object>
+  }
+
+  class CardService {
+    +create(customerId: string, input: object): Promise<Card>
+    +list(customerId: string): Promise<Card[]>
+    +assertOwned(customerId: string, cardId: string): Promise<void>
+    +toDto(card: Card): object
+  }
+
+  class CartService {
+    +get(customerId: string): Promise<Cart>
+    +add(customerId: string, bookId: string, quantity: number): Promise<Cart>
+    +update(customerId: string, bookId: string, quantity: number): Promise<Cart>
+    +remove(customerId: string, bookId: string): Promise<Cart>
+  }
+
+  class CatalogService {
+    +list(): Promise<Book[]>
+    +get(id: string): Promise<Book>
+  }
+
+  class PaymentService {
+    +pay(input: PaymentInput): Promise<object>
+  }
+
+  class OrderService {
+    +preview(customerId: string, region: Region): Promise<PricingResult>
+    +checkout(customerId: string, input: CheckoutInput): Promise<Order>
+    +list(customerId: string): Promise<Order[]>
+    +get(customerId: string, id: string): Promise<Order>
+    +cancelExpired(): Promise<number>
+  }
+}
+
+package "Repositories" {
+  class BankRepository {
+    +findAll(): Promise<Bank[]>
+    +findById(id: string): Promise<Bank>
+    +create(data: object): Promise<Bank>
+  }
+
+  class BookRepository {
+    +findAll(): Promise<Book[]>
+    +findById(id: string): Promise<Book>
+    +decreaseStock(id: string, quantity: number): Promise<boolean>
+    +increaseStock(id: string, quantity: number): Promise<boolean>
+  }
+
+  class CardRepository {
+    +create(data: object): Promise<Card>
+    +findByCustomer(customerId: string): Promise<Card[]>
+    +findByIdForCustomer(cardId: string, customerId: string): Promise<Card>
+    +reserveLimit(cardId: string, customerId: string, amount: number): Promise<boolean>
+  }
+
+  class CartRepository {
+    +findByCustomer(customerId: string): Promise<Cart>
+    +findRawByCustomer(customerId: string): Promise<Cart>
+    +addItem(customerId: string, bookId: string, quantity: number): Promise<Cart>
+    +updateItem(customerId: string, bookId: string, quantity: number): Promise<Cart>
+    +removeItem(customerId: string, bookId: string): Promise<Cart>
+    +clear(customerId: string): Promise<void>
+  }
+
+  class CustomerRepository {
+    +findByEmail(email: string): Promise<Customer>
+    +findById(id: string): Promise<Customer>
+    +create(data: object): Promise<Customer>
+  }
+
+  class OrderRepository {
+    +create(data: object): Promise<Order>
+    +findByCustomer(customerId: string): Promise<Order[]>
+    +findByIdForCustomer(orderId: string, customerId: string): Promise<Order>
+    +updatePayment(orderId: string, data: object): Promise<Order>
+    +findExpired(): Promise<Order[]>
+    +cancelOneIfExpired(orderId: string): Promise<Order>
+  }
+}
+
+' Dependências entre serviços e repositórios
+AuthService --> CustomerRepository
+BankService --> BankRepository
+BankService --> CardRepository
+CardService --> CardRepository
+CardService --> BankRepository
+CartService --> CartRepository
+CartService --> BookRepository
+CatalogService --> BookRepository
+PaymentService --> BankService
+PaymentService --> CardRepository
+OrderService --> OrderRepository
+OrderService --> CartRepository
+OrderService --> BookRepository
+OrderService --> PaymentService
+OrderService --> PricingService
+OrderService --> OrderStatusService
+
+' Relacionamentos persistidos (referências ObjectId do Mongoose)
+Card "0..*" --> "1" Customer : customerId
+Card "0..*" --> "1" Bank : bankId
+Cart "0..*" --> "1" Customer : customerId
+CartItem "0..*" --> "1" Book : bookId
+Order "0..*" --> "1" Customer : customerId
+Order "0..*" --> "0..1" Card : cardId
+OrderItem "0..*" --> "1" Book : bookId
+
+' Composição de subdocumentos embutidos
+Cart "1" *-- "0..*" CartItem : items
+Order "1" *-- "1..*" OrderItem : items
+Order "1" *-- "1" DeliveryAddress : deliveryAddress
+
+@enduml

@@ -1,0 +1,1189 @@
+<svg version="1.1" baseProfile="full" width="10443.0" height="1529.0" viewBox="0 0 10443 1529" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events">
+<desc >#.interface: fill=lightblue
+#.enumeration: fill=lightgreen
+#.type: fill=lightgray
+[AuthController||+static register(): Promise&lt;void&gt;;+static login(): Promise&lt;void&gt;]
+[BankController||+static list(): Promise&lt;void&gt;;+static create(): Promise&lt;void&gt;]
+[CardController||+static list(): Promise&lt;void&gt;;+static create(): Promise&lt;void&gt;]
+[CartController||+static get(): Promise&lt;void&gt;;+static add(): Promise&lt;void&gt;;+static update(): Promise&lt;void&gt;;+static remove(): Promise&lt;void&gt;]
+[CatalogController||+static list(): Promise&lt;void&gt;;+static get(): Promise&lt;void&gt;]
+[OrderController||+static preview(): Promise&lt;void&gt;;+static checkout(): Promise&lt;void&gt;;+static list(): Promise&lt;void&gt;;+static get(): Promise&lt;void&gt;]
+[&lt;enumeration&gt;CustomerProfile|NONE;BRONZE;SILVER;GOLD]
+[&lt;enumeration&gt;Region|SOUTHEAST;OTHER]
+[&lt;enumeration&gt;PaymentMethod|CREDIT_CARD;PIX]
+[&lt;enumeration&gt;PaymentStatus|PENDING;APPROVED;DECLINED]
+[&lt;enumeration&gt;OrderStatus|CREATED;PROCESSING;CONFIRMED;CANCELLED;DELIVERED;FINISHED]
+[BankRepository||+findAll(): Query&lt;(Document&lt;unknown, {}, { name: string; code: string; } &amp; DefaultTimestampProps, {}, { timestamps: true; }&gt; &amp; { name: string; code: string; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; })\[\], ... 4 more ..., {}&gt;;+findById(): Query&lt;(Document&lt;unknown, {}, { name: string; code: string; } &amp; DefaultTimestampProps, {}, { timestamps: true; }&gt; &amp; { name: string; code: string; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }) \| null, ... 4 more ..., {}&gt;;+create(): Promise&lt;Document&lt;unknown, {}, { name: string; code: string; } &amp; DefaultTimestampProps, {}, { timestamps: true; }&gt; &amp; { name: string; code: string; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }&gt;]
+[BookRepository||+findAll(): Query&lt;(Document&lt;unknown, {}, { title: string; author: string; price: number; stock: number; } &amp; DefaultTimestampProps, {}, { timestamps: true; }&gt; &amp; { title: string; author: string; price: number; stock: number; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; })\[\], ... 4 more ..., {}&gt;;+findById(): Query&lt;(Document&lt;unknown, {}, { title: string; author: string; price: number; stock: number; } &amp; DefaultTimestampProps, {}, { timestamps: true; }&gt; &amp; { title: string; author: string; price: number; stock: number; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }) \| null, ... 4 more ..., {}&gt;;+decreaseStock(): Promise&lt;boolean&gt;;+increaseStock(): Query&lt;UpdateWriteOpResult, Document&lt;unknown, {}, { title: string; author: string; price: number; stock: number; } &amp; DefaultTimestampProps, {}, { timestamps: true; }&gt; &amp; { ...; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }, {}, { ...; } &amp; DefaultTimestampProps, &quot;updateOne&quot;, {}&gt;]
+[CardRepository||+create(): Promise&lt;Document&lt;unknown, {}, { customerId: ObjectId; bankId: ObjectId; holderName: string; last4: string; creditLimit: number; availableLimit: number; } &amp; DefaultTimestampProps, {}, { ...; }&gt; &amp; { ...; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }&gt;;+findByCustomer(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId; bankId: ObjectId; holderName: string; last4: string; creditLimit: number; availableLimit: number; } &amp; DefaultTimestampProps, {}, { ...; }&gt; &amp; { ...; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; })\[\], ... 4 more ..., {}&gt;;+findByIdForCustomer(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId; bankId: ObjectId; holderName: string; last4: string; creditLimit: number; availableLimit: number; } &amp; DefaultTimestampProps, {}, { ...; }&gt; &amp; { ...; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }) \| null, ... 4 more ..., {}&gt;;+reserveLimit(): Promise&lt;boolean&gt;]
+[CartRepository||+findByCustomer(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ bookId: ObjectId; quantity: number; }, Subdocument&lt;ObjectId, any, { bookId: ObjectId; quantity: number; }&gt; &amp; { ...; }&gt;; } &amp; DefaultTimestampProps, {}, { ...; }&gt; &amp; { ...; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }) \| null, ... 4 more ......;+findRawByCustomer(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ bookId: ObjectId; quantity: number; }, Subdocument&lt;ObjectId, any, { bookId: ObjectId; quantity: number; }&gt; &amp; { ...; }&gt;; } &amp; DefaultTimestampProps, {}, { ...; }&gt; &amp; { ...; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }) \| null, ... 4 more ......;+addItem(): Promise&lt;Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ bookId: ObjectId; quantity: number; }, Subdocument&lt;ObjectId, any, { bookId: ObjectId; quantity: number; }&gt; &amp; { ...; }&gt;; } &amp; DefaultTimestampProps, {}, { ...; }&gt; &amp; { ...; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }&gt;;+updateItem(): Promise&lt;(Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ bookId: ObjectId; quantity: number; }, Subdocument&lt;ObjectId, any, { bookId: ObjectId; quantity: number; }&gt; &amp; { ...; }&gt;; } &amp; DefaultTimestampProps, {}, { ...; }&gt; &amp; { ...; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }) \| null&gt;;+removeItem(): Promise&lt;(Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ bookId: ObjectId; quantity: number; }, Subdocument&lt;ObjectId, any, { bookId: ObjectId; quantity: number; }&gt; &amp; { ...; }&gt;; } &amp; DefaultTimestampProps, {}, { ...; }&gt; &amp; { ...; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }) \| null&gt;;+clear(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ bookId: ObjectId; quantity: number; }, Subdocument&lt;ObjectId, any, { bookId: ObjectId; quantity: number; }&gt; &amp; { ...; }&gt;; } &amp; DefaultTimestampProps, {}, { ...; }&gt; &amp; { ...; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }) \| null, ... 4 more ......]
+[CustomerRepository||+findByEmail(): Query&lt;(Document&lt;unknown, {}, { name: string; createdAt: NativeDate; email: string; passwordHash: string; }, {}, DefaultSchemaOptions&gt; &amp; { name: string; createdAt: NativeDate; email: string; passwordHash: string; } &amp; { ...; } &amp; { ...; }) \| null, ... 4 more ..., {}&gt;;+findById(): Query&lt;(Document&lt;unknown, {}, { name: string; createdAt: NativeDate; email: string; passwordHash: string; }, {}, DefaultSchemaOptions&gt; &amp; { name: string; createdAt: NativeDate; email: string; passwordHash: string; } &amp; { ...; } &amp; { ...; }) \| null, ... 4 more ..., {}&gt;;+create(): Promise&lt;Document&lt;unknown, {}, { name: string; createdAt: NativeDate; email: string; passwordHash: string; }, {}, DefaultSchemaOptions&gt; &amp; { name: string; createdAt: NativeDate; email: string; passwordHash: string; } &amp; { ...; } &amp; { ...; }&gt;]
+[OrderRepository||+create(): Promise&lt;Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ title: string; bookId: ObjectId; quantity: number; unitPrice: number; }, Subdocument&lt;ObjectId, any, { title: string; bookId: ObjectId; quantity: number; unitPrice: number; }&gt; &amp; { ...; }&gt;; ... 12 more ...; cardId?: ObjectId \| ... 1 more ... ...;+findByCustomer(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ title: string; bookId: ObjectId; quantity: number; unitPrice: number; }, Subdocument&lt;ObjectId, any, { title: string; bookId: ObjectId; quantity: number; unitPrice: number; }&gt; &amp; { ...; }&gt;; ... 12 more ...; cardId?: ObjectId \| ... 1 more ... \|...;+findByIdForCustomer(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ title: string; bookId: ObjectId; quantity: number; unitPrice: number; }, Subdocument&lt;ObjectId, any, { title: string; bookId: ObjectId; quantity: number; unitPrice: number; }&gt; &amp; { ...; }&gt;; ... 12 more ...; cardId?: ObjectId \| ... 1 more ... \|...;+updatePayment(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ title: string; bookId: ObjectId; quantity: number; unitPrice: number; }, Subdocument&lt;ObjectId, any, { title: string; bookId: ObjectId; quantity: number; unitPrice: number; }&gt; &amp; { ...; }&gt;; ... 12 more ...; cardId?: ObjectId \| ... 1 more ... \|...;+findExpired(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ title: string; bookId: ObjectId; quantity: number; unitPrice: number; }, Subdocument&lt;ObjectId, any, { title: string; bookId: ObjectId; quantity: number; unitPrice: number; }&gt; &amp; { ...; }&gt;; ... 12 more ...; cardId?: ObjectId \| ... 1 more ... \|...;+cancelOneIfExpired(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ title: string; bookId: ObjectId; quantity: number; unitPrice: number; }, Subdocument&lt;ObjectId, any, { title: string; bookId: ObjectId; quantity: number; unitPrice: number; }&gt; &amp; { ...; }&gt;; ... 12 more ...; cardId?: ObjectId \| ... 1 more ... \|...]
+[AuthService||+register(): Promise&lt;{ id: any; name: string; email: string; }&gt;;+login(): Promise&lt;{ token: string; customer: { id: any; name: string; email: string; }; }&gt;]
+[BankService||+list(): Query&lt;(Document&lt;unknown, {}, { name: string; code: string; } &amp; DefaultTimestampProps, {}, { timestamps: true; }&gt; &amp; { name: string; code: string; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; })\[\], ... 4 more ..., {}&gt;;+create(): Promise&lt;Document&lt;unknown, {}, { name: string; code: string; } &amp; DefaultTimestampProps, {}, { timestamps: true; }&gt; &amp; { name: string; code: string; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }&gt;;+authorize(): Promise&lt;{ status: PaymentStatus; reference: string; }&gt;]
+[CardService||+create(): Promise&lt;{ id: any; holderName: any; last4: any; creditLimit: any; availableLimit: any; bank: { id: any; name: any; code: any; } \| null; }&gt;;+list(): Promise&lt;{ id: any; holderName: any; last4: any; creditLimit: any; availableLimit: any; bank: { id: any; name: any; code: any; } \| null; }\[\]&gt;;+assertOwned(): Promise&lt;void&gt;]
+[CartService||+get(): Promise&lt;{ items: { bookId: any; title: any; unitPrice: any; quantity: any; lineTotal: number; }\[\]; subtotal: number; }&gt;;+add(): Promise&lt;{ items: { bookId: any; title: any; unitPrice: any; quantity: any; lineTotal: number; }\[\]; subtotal: number; }&gt;;+update(): Promise&lt;{ items: { bookId: any; title: any; unitPrice: any; quantity: any; lineTotal: number; }\[\]; subtotal: number; }&gt;;+remove(): Promise&lt;{ items: { bookId: any; title: any; unitPrice: any; quantity: any; lineTotal: number; }\[\]; subtotal: number; }&gt;]
+[CatalogService||+list(): Query&lt;(Document&lt;unknown, {}, { title: string; author: string; price: number; stock: number; } &amp; DefaultTimestampProps, {}, { timestamps: true; }&gt; &amp; { title: string; author: string; price: number; stock: number; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; })\[\], ... 4 more ..., {}&gt;;+get(): Promise&lt;Document&lt;unknown, {}, { title: string; author: string; price: number; stock: number; } &amp; DefaultTimestampProps, {}, { timestamps: true; }&gt; &amp; { title: string; author: string; price: number; stock: number; } &amp; DefaultTimestampProps &amp; { ...; } &amp; { ...; }&gt;]
+[OrderService||+preview(): Promise&lt;{ profile: CustomerProfile; discountRate: number; discount: number; shippingRate: number; shipping: number; total: number; items: { bookId: any; title: any; unitPrice: any; quantity: any; lineTotal: number; }\[\]; subtotal: number; }&gt;;+checkout(): Promise&lt;{ order: (Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ title: string; bookId: ObjectId; quantity: number; unitPrice: number; }, Subdocument&lt;ObjectId, any, { title: string; bookId: ObjectId; quantity: number; unitPrice: number; }&gt; &amp; { ...; }&gt;; ... 12 more ...; cardId?: ObjectId \| ... 1...;+list(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ title: string; bookId: ObjectId; quantity: number; unitPrice: number; }, Subdocument&lt;ObjectId, any, { title: string; bookId: ObjectId; quantity: number; unitPrice: number; }&gt; &amp; { ...; }&gt;; ... 12 more ...; cardId?: ObjectId \| ... 1 more ... \|...;+get(): Promise&lt;Document&lt;unknown, {}, { customerId: ObjectId; items: DocumentArray&lt;{ title: string; bookId: ObjectId; quantity: number; unitPrice: number; }, Subdocument&lt;ObjectId, any, { title: string; bookId: ObjectId; quantity: number; unitPrice: number; }&gt; &amp; { ...; }&gt;; ... 12 more ...; cardId?: ObjectId \| ... 1 more ... ...;+cancelExpired(): Promise&lt;number&gt;]
+[&lt;interface&gt;CheckoutInput|+region: Region;+paymentMethod: PaymentMethod;+cardId?: string;+deliveryAddress: { postalCode: string; street: string; number: string; complement?: string \| undefined; neighborhood: string; city: string; state: string; }|]
+[CheckoutInput]  -  [Region]
+[CheckoutInput]  -  [PaymentMethod]
+[PaymentService||+pay(): Promise&lt;{ status: PaymentStatus; reference: string; }&gt;]
+[&lt;interface&gt;PaymentInput|+method: PaymentMethod;+amount: number;+customerId: string;+cardId?: string|]
+[PaymentInput]  -  [PaymentMethod]
+[AppError|+statusCode: number|]
+[&lt;interface&gt;PricingInput|+subtotal: number;+yearsAsCustomer: number;+region: Region|]
+[&lt;interface&gt;PricingResult|+profile: CustomerProfile;+discountRate: number;+discount: number;+shippingRate: number;+shipping: number;+total: number|]
+[PricingInput]  -  [Region]
+[PricingResult]  -  [CustomerProfile]</desc>
+<g stroke-width="1.0" text-align="left" font="12pt Helvetica, Arial, sans-serif" font-size="12pt" font-family="Helvetica" font-weight="normal" font-style="normal">
+<g font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" stroke-width="3.0" stroke-linejoin="round" stroke-linecap="round" stroke="#33322E">
+<g stroke="transparent" fill="transparent">
+<rect x="0.0" y="0.0" height="1529.0" width="10443.0" stroke="none"></rect>
+</g>
+<g transform="translate(8, 8)" fill="#33322E">
+<g transform="translate(20, 20)" fill="#33322E" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal">
+<path d="M8833.0 777.0 L8833 1340 L8833 1376.5 L8833.0 1376.5 " fill="none"></path>
+<path d="M8992.0 774.6 L9776.75 1340 L9932.5 1392.3155872667398 L9932.5 1392.3 " fill="none"></path>
+<path d="M10024.5 720.5 L10024.5 1340 L10014.95751633987 1376.5 L10015.0 1376.5 " fill="none"></path>
+<path d="M9529.0 712.5 L9529 1340 L8891.5 1410.0700431034484 L8891.5 1410.1 " fill="none"></path>
+<path d="M10281.5 736.5 L10281.5 1340 L10281.5 1360 L10281.5 1360.0 " fill="none"></path>
+<g data-name="AuthController">
+<g fill="#eee8d5" stroke="#33322E" data-name="AuthController">
+<rect x="0.0" y="616.0" height="88.0" width="272.0" data-name="AuthController"></rect>
+<path d="M0.0 648.0 L272.0 648.0" fill="none" data-name="AuthController"></path>
+<path d="M0.0 656.0 L272.0 656.0" fill="none" data-name="AuthController"></path>
+</g>
+<g transform="translate(0, 616)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AuthController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AuthController" data-compartment="0">
+<a id="src/controllers/auth.controller.ts.AuthController" xlink:href="src/controllers/auth.controller.ts"><text x="128.0" y="14.1" stroke="none" text-anchor="middle" data-name="AuthController" data-compartment="0">AuthController</text></a>
+
+</g>
+</g>
+<g transform="translate(0, 648)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AuthController" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(0, 656)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuthController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="AuthController" data-compartment="2">+static register(): Promise&lt;void&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="AuthController" data-compartment="2">+static login(): Promise&lt;void&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="BankController">
+<g fill="#eee8d5" stroke="#33322E" data-name="BankController">
+<rect x="312.0" y="616.0" height="88.0" width="262.0" data-name="BankController"></rect>
+<path d="M312.0 648.0 L574.0 648.0" fill="none" data-name="BankController"></path>
+<path d="M312.0 656.0 L574.0 656.0" fill="none" data-name="BankController"></path>
+</g>
+<g transform="translate(312, 616)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="BankController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="BankController" data-compartment="0">
+<a id="src/controllers/bank.controller.ts.BankController" xlink:href="src/controllers/bank.controller.ts"><text x="123.0" y="14.1" stroke="none" text-anchor="middle" data-name="BankController" data-compartment="0">BankController</text></a>
+
+</g>
+</g>
+<g transform="translate(312, 648)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BankController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="BankController" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(312, 656)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BankController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="BankController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="BankController" data-compartment="2">+static list(): Promise&lt;void&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="BankController" data-compartment="2">+static create(): Promise&lt;void&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CardController">
+<g fill="#eee8d5" stroke="#33322E" data-name="CardController">
+<rect x="614.0" y="616.0" height="88.0" width="262.0" data-name="CardController"></rect>
+<path d="M614.0 648.0 L876.0 648.0" fill="none" data-name="CardController"></path>
+<path d="M614.0 656.0 L876.0 656.0" fill="none" data-name="CardController"></path>
+</g>
+<g transform="translate(614, 616)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CardController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CardController" data-compartment="0">
+<a id="src/controllers/card.controller.ts.CardController" xlink:href="src/controllers/card.controller.ts"><text x="123.0" y="14.1" stroke="none" text-anchor="middle" data-name="CardController" data-compartment="0">CardController</text></a>
+
+</g>
+</g>
+<g transform="translate(614, 648)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CardController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CardController" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(614, 656)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CardController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CardController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="CardController" data-compartment="2">+static list(): Promise&lt;void&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CardController" data-compartment="2">+static create(): Promise&lt;void&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CartController">
+<g fill="#eee8d5" stroke="#33322E" data-name="CartController">
+<rect x="916.0" y="599.5" height="121.0" width="271.0" data-name="CartController"></rect>
+<path d="M916.0 631.5 L1187.0 631.5" fill="none" data-name="CartController"></path>
+<path d="M916.0 639.5 L1187.0 639.5" fill="none" data-name="CartController"></path>
+</g>
+<g transform="translate(916, 599.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CartController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CartController" data-compartment="0">
+<a id="src/controllers/cart.controller.ts.CartController" xlink:href="src/controllers/cart.controller.ts"><text x="127.5" y="14.1" stroke="none" text-anchor="middle" data-name="CartController" data-compartment="0">CartController</text></a>
+
+</g>
+</g>
+<g transform="translate(916, 631.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CartController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CartController" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(916, 639.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CartController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CartController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="CartController" data-compartment="2">+static get(): Promise&lt;void&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CartController" data-compartment="2">+static add(): Promise&lt;void&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CartController" data-compartment="2">+static update(): Promise&lt;void&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CartController" data-compartment="2">+static remove(): Promise&lt;void&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CatalogController">
+<g fill="#eee8d5" stroke="#33322E" data-name="CatalogController">
+<rect x="1227.0" y="616.0" height="88.0" width="237.0" data-name="CatalogController"></rect>
+<path d="M1227.0 648.0 L1464.0 648.0" fill="none" data-name="CatalogController"></path>
+<path d="M1227.0 656.0 L1464.0 656.0" fill="none" data-name="CatalogController"></path>
+</g>
+<g transform="translate(1227, 616)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CatalogController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CatalogController" data-compartment="0">
+<a id="src/controllers/catalog.controller.ts.CatalogController" xlink:href="src/controllers/catalog.controller.ts"><text x="110.5" y="14.1" stroke="none" text-anchor="middle" data-name="CatalogController" data-compartment="0">CatalogController</text></a>
+
+</g>
+</g>
+<g transform="translate(1227, 648)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CatalogController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CatalogController" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(1227, 656)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CatalogController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CatalogController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="CatalogController" data-compartment="2">+static list(): Promise&lt;void&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CatalogController" data-compartment="2">+static get(): Promise&lt;void&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="OrderController">
+<g fill="#eee8d5" stroke="#33322E" data-name="OrderController">
+<rect x="1504.0" y="599.5" height="121.0" width="284.0" data-name="OrderController"></rect>
+<path d="M1504.0 631.5 L1788.0 631.5" fill="none" data-name="OrderController"></path>
+<path d="M1504.0 639.5 L1788.0 639.5" fill="none" data-name="OrderController"></path>
+</g>
+<g transform="translate(1504, 599.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="OrderController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="OrderController" data-compartment="0">
+<a id="src/controllers/order.controller.ts.OrderController" xlink:href="src/controllers/order.controller.ts"><text x="134.0" y="14.1" stroke="none" text-anchor="middle" data-name="OrderController" data-compartment="0">OrderController</text></a>
+
+</g>
+</g>
+<g transform="translate(1504, 631.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OrderController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="OrderController" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(1504, 639.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OrderController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="OrderController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="OrderController" data-compartment="2">+static preview(): Promise&lt;void&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="OrderController" data-compartment="2">+static checkout(): Promise&lt;void&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="OrderController" data-compartment="2">+static list(): Promise&lt;void&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="OrderController" data-compartment="2">+static get(): Promise&lt;void&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CustomerProfile">
+<g fill="lightgreen" stroke="#33322E" data-name="CustomerProfile">
+<rect x="10210.5" y="1360.0" height="113.0" width="142.0" data-name="CustomerProfile"></rect>
+<path d="M10210.5 1392.0 L10352.5 1392.0" fill="none" data-name="CustomerProfile"></path>
+</g>
+<g transform="translate(10210.5, 1360)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CustomerProfile" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CustomerProfile" data-compartment="0">
+<a id="src/domain/enums.ts.CustomerProfile" xlink:href="src/domain/enums.ts"><text x="63.0" y="14.1" stroke="none" text-anchor="middle" data-name="CustomerProfile" data-compartment="0">CustomerProfile</text></a>
+
+</g>
+</g>
+<g transform="translate(10210.5, 1392)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CustomerProfile" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CustomerProfile" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CustomerProfile" data-compartment="1">NONE</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CustomerProfile" data-compartment="1">BRONZE</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CustomerProfile" data-compartment="1">SILVER</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CustomerProfile" data-compartment="1">GOLD</text>
+
+</g>
+</g>
+</g>
+<g data-name="Region">
+<g fill="lightgreen" stroke="#33322E" data-name="Region">
+<rect x="8774.5" y="1376.5" height="80.0" width="117.0" data-name="Region"></rect>
+<path d="M8774.5 1408.5 L8891.5 1408.5" fill="none" data-name="Region"></path>
+</g>
+<g transform="translate(8774.5, 1376.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Region" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Region" data-compartment="0">
+<a id="src/domain/enums.ts.Region" xlink:href="src/domain/enums.ts"><text x="50.5" y="14.1" stroke="none" text-anchor="middle" data-name="Region" data-compartment="0">Region</text></a>
+
+</g>
+</g>
+<g transform="translate(8774.5, 1408.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Region" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Region" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="Region" data-compartment="1">SOUTHEAST</text>
+<text x="0.0" y="30.3" stroke="none" data-name="Region" data-compartment="1">OTHER</text>
+
+</g>
+</g>
+</g>
+<g data-name="PaymentMethod">
+<g fill="lightgreen" stroke="#33322E" data-name="PaymentMethod">
+<rect x="9932.5" y="1376.5" height="80.0" width="144.0" data-name="PaymentMethod"></rect>
+<path d="M9932.5 1408.5 L10076.5 1408.5" fill="none" data-name="PaymentMethod"></path>
+</g>
+<g transform="translate(9932.5, 1376.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PaymentMethod" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PaymentMethod" data-compartment="0">
+<a id="src/domain/enums.ts.PaymentMethod" xlink:href="src/domain/enums.ts"><text x="64.0" y="14.1" stroke="none" text-anchor="middle" data-name="PaymentMethod" data-compartment="0">PaymentMethod</text></a>
+
+</g>
+</g>
+<g transform="translate(9932.5, 1408.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PaymentMethod" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PaymentMethod" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="PaymentMethod" data-compartment="1">CREDIT_CARD</text>
+<text x="0.0" y="30.3" stroke="none" data-name="PaymentMethod" data-compartment="1">PIX</text>
+
+</g>
+</g>
+</g>
+<g data-name="PaymentStatus">
+<g fill="lightgreen" stroke="#33322E" data-name="PaymentStatus">
+<rect x="1828.0" y="611.5" height="97.0" width="135.0" data-name="PaymentStatus"></rect>
+<path d="M1828.0 643.5 L1963.0 643.5" fill="none" data-name="PaymentStatus"></path>
+</g>
+<g transform="translate(1828, 611.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PaymentStatus" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PaymentStatus" data-compartment="0">
+<a id="src/domain/enums.ts.PaymentStatus" xlink:href="src/domain/enums.ts"><text x="59.5" y="14.1" stroke="none" text-anchor="middle" data-name="PaymentStatus" data-compartment="0">PaymentStatus</text></a>
+
+</g>
+</g>
+<g transform="translate(1828, 643.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PaymentStatus" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PaymentStatus" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="PaymentStatus" data-compartment="1">PENDING</text>
+<text x="0.0" y="30.3" stroke="none" data-name="PaymentStatus" data-compartment="1">APPROVED</text>
+<text x="0.0" y="46.5" stroke="none" data-name="PaymentStatus" data-compartment="1">DECLINED</text>
+
+</g>
+</g>
+</g>
+<g data-name="OrderStatus">
+<g fill="lightgreen" stroke="#33322E" data-name="OrderStatus">
+<rect x="2003.0" y="587.5" height="145.0" width="127.0" data-name="OrderStatus"></rect>
+<path d="M2003.0 619.5 L2130.0 619.5" fill="none" data-name="OrderStatus"></path>
+</g>
+<g transform="translate(2003, 587.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OrderStatus" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="OrderStatus" data-compartment="0">
+<a id="src/domain/enums.ts.OrderStatus" xlink:href="src/domain/enums.ts"><text x="55.5" y="14.1" stroke="none" text-anchor="middle" data-name="OrderStatus" data-compartment="0">OrderStatus</text></a>
+
+</g>
+</g>
+<g transform="translate(2003, 619.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OrderStatus" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="OrderStatus" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="OrderStatus" data-compartment="1">CREATED</text>
+<text x="0.0" y="30.3" stroke="none" data-name="OrderStatus" data-compartment="1">PROCESSING</text>
+<text x="0.0" y="46.5" stroke="none" data-name="OrderStatus" data-compartment="1">CONFIRMED</text>
+<text x="0.0" y="62.7" stroke="none" data-name="OrderStatus" data-compartment="1">CANCELLED</text>
+<text x="0.0" y="78.9" stroke="none" data-name="OrderStatus" data-compartment="1">DELIVERED</text>
+<text x="0.0" y="95.1" stroke="none" data-name="OrderStatus" data-compartment="1">FINISHED</text>
+
+</g>
+</g>
+</g>
+<g data-name="BankRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="BankRepository">
+<rect x="2170.0" y="437.5" height="445.0" width="478.0" data-name="BankRepository"></rect>
+<path d="M2170.0 469.5 L2648.0 469.5" fill="none" data-name="BankRepository"></path>
+<path d="M2170.0 477.5 L2648.0 477.5" fill="none" data-name="BankRepository"></path>
+</g>
+<g transform="translate(2170, 437.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="BankRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="BankRepository" data-compartment="0">
+<a id="src/repositories/bank.repository.ts.BankRepository" xlink:href="src/repositories/bank.repository.ts"><text x="231.0" y="14.1" stroke="none" text-anchor="middle" data-name="BankRepository" data-compartment="0">BankRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(2170, 469.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BankRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="BankRepository" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(2170, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BankRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="BankRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="BankRepository" data-compartment="2">+findAll(): Query&lt;(Document&lt;unknown, {}, { name: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="BankRepository" data-compartment="2">code: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="BankRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { timestamps: true</text>
+<text x="0.0" y="62.7" stroke="none" data-name="BankRepository" data-compartment="2">}&gt; &amp; { name: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="BankRepository" data-compartment="2">code: string</text>
+<text x="0.0" y="95.1" stroke="none" data-name="BankRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="111.3" stroke="none" data-name="BankRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="127.5" stroke="none" data-name="BankRepository" data-compartment="2">})[], ... 4 more ..., {}&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="BankRepository" data-compartment="2">+findById(): Query&lt;(Document&lt;unknown, {}, { name: string</text>
+<text x="0.0" y="159.9" stroke="none" data-name="BankRepository" data-compartment="2">code: string</text>
+<text x="0.0" y="176.1" stroke="none" data-name="BankRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { timestamps: true</text>
+<text x="0.0" y="192.3" stroke="none" data-name="BankRepository" data-compartment="2">}&gt; &amp; { name: string</text>
+<text x="0.0" y="208.5" stroke="none" data-name="BankRepository" data-compartment="2">code: string</text>
+<text x="0.0" y="224.7" stroke="none" data-name="BankRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="240.9" stroke="none" data-name="BankRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="257.1" stroke="none" data-name="BankRepository" data-compartment="2">}) | null, ... 4 more ..., {}&gt;</text>
+<text x="0.0" y="273.3" stroke="none" data-name="BankRepository" data-compartment="2">+create(): Promise&lt;Document&lt;unknown, {}, { name: string</text>
+<text x="0.0" y="289.5" stroke="none" data-name="BankRepository" data-compartment="2">code: string</text>
+<text x="0.0" y="305.7" stroke="none" data-name="BankRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { timestamps: true</text>
+<text x="0.0" y="321.9" stroke="none" data-name="BankRepository" data-compartment="2">}&gt; &amp; { name: string</text>
+<text x="0.0" y="338.1" stroke="none" data-name="BankRepository" data-compartment="2">code: string</text>
+<text x="0.0" y="354.3" stroke="none" data-name="BankRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="370.5" stroke="none" data-name="BankRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="386.7" stroke="none" data-name="BankRepository" data-compartment="2">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="BookRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="BookRepository">
+<rect x="2688.0" y="348.5" height="623.0" width="685.0" data-name="BookRepository"></rect>
+<path d="M2688.0 380.5 L3373.0 380.5" fill="none" data-name="BookRepository"></path>
+<path d="M2688.0 388.5 L3373.0 388.5" fill="none" data-name="BookRepository"></path>
+</g>
+<g transform="translate(2688, 348.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="BookRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="BookRepository" data-compartment="0">
+<a id="src/repositories/book.repository.ts.BookRepository" xlink:href="src/repositories/book.repository.ts"><text x="334.5" y="14.1" stroke="none" text-anchor="middle" data-name="BookRepository" data-compartment="0">BookRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(2688, 380.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BookRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="BookRepository" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(2688, 388.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BookRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="BookRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="BookRepository" data-compartment="2">+findAll(): Query&lt;(Document&lt;unknown, {}, { title: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="BookRepository" data-compartment="2">author: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="BookRepository" data-compartment="2">price: number</text>
+<text x="0.0" y="62.7" stroke="none" data-name="BookRepository" data-compartment="2">stock: number</text>
+<text x="0.0" y="78.9" stroke="none" data-name="BookRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { timestamps: true</text>
+<text x="0.0" y="95.1" stroke="none" data-name="BookRepository" data-compartment="2">}&gt; &amp; { title: string</text>
+<text x="0.0" y="111.3" stroke="none" data-name="BookRepository" data-compartment="2">author: string</text>
+<text x="0.0" y="127.5" stroke="none" data-name="BookRepository" data-compartment="2">price: number</text>
+<text x="0.0" y="143.7" stroke="none" data-name="BookRepository" data-compartment="2">stock: number</text>
+<text x="0.0" y="159.9" stroke="none" data-name="BookRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="176.1" stroke="none" data-name="BookRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="192.3" stroke="none" data-name="BookRepository" data-compartment="2">})[], ... 4 more ..., {}&gt;</text>
+<text x="0.0" y="208.5" stroke="none" data-name="BookRepository" data-compartment="2">+findById(): Query&lt;(Document&lt;unknown, {}, { title: string</text>
+<text x="0.0" y="224.7" stroke="none" data-name="BookRepository" data-compartment="2">author: string</text>
+<text x="0.0" y="240.9" stroke="none" data-name="BookRepository" data-compartment="2">price: number</text>
+<text x="0.0" y="257.1" stroke="none" data-name="BookRepository" data-compartment="2">stock: number</text>
+<text x="0.0" y="273.3" stroke="none" data-name="BookRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { timestamps: true</text>
+<text x="0.0" y="289.5" stroke="none" data-name="BookRepository" data-compartment="2">}&gt; &amp; { title: string</text>
+<text x="0.0" y="305.7" stroke="none" data-name="BookRepository" data-compartment="2">author: string</text>
+<text x="0.0" y="321.9" stroke="none" data-name="BookRepository" data-compartment="2">price: number</text>
+<text x="0.0" y="338.1" stroke="none" data-name="BookRepository" data-compartment="2">stock: number</text>
+<text x="0.0" y="354.3" stroke="none" data-name="BookRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="370.5" stroke="none" data-name="BookRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="386.7" stroke="none" data-name="BookRepository" data-compartment="2">}) | null, ... 4 more ..., {}&gt;</text>
+<text x="0.0" y="402.9" stroke="none" data-name="BookRepository" data-compartment="2">+decreaseStock(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="419.1" stroke="none" data-name="BookRepository" data-compartment="2">+increaseStock(): Query&lt;UpdateWriteOpResult, Document&lt;unknown, {}, { title: string</text>
+<text x="0.0" y="435.3" stroke="none" data-name="BookRepository" data-compartment="2">author: string</text>
+<text x="0.0" y="451.5" stroke="none" data-name="BookRepository" data-compartment="2">price: number</text>
+<text x="0.0" y="467.7" stroke="none" data-name="BookRepository" data-compartment="2">stock: number</text>
+<text x="0.0" y="483.9" stroke="none" data-name="BookRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { timestamps: true</text>
+<text x="0.0" y="500.1" stroke="none" data-name="BookRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="516.3" stroke="none" data-name="BookRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="532.5" stroke="none" data-name="BookRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="548.7" stroke="none" data-name="BookRepository" data-compartment="2">}, {}, { ...</text>
+<text x="0.0" y="564.9" stroke="none" data-name="BookRepository" data-compartment="2">} &amp; DefaultTimestampProps, &quot;updateOne&quot;, {}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CardRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="CardRepository">
+<rect x="3413.0" y="356.5" height="607.0" width="646.0" data-name="CardRepository"></rect>
+<path d="M3413.0 388.5 L4059.0 388.5" fill="none" data-name="CardRepository"></path>
+<path d="M3413.0 396.5 L4059.0 396.5" fill="none" data-name="CardRepository"></path>
+</g>
+<g transform="translate(3413, 356.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CardRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CardRepository" data-compartment="0">
+<a id="src/repositories/card.repository.ts.CardRepository" xlink:href="src/repositories/card.repository.ts"><text x="315.0" y="14.1" stroke="none" text-anchor="middle" data-name="CardRepository" data-compartment="0">CardRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(3413, 388.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CardRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CardRepository" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(3413, 396.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CardRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CardRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="CardRepository" data-compartment="2">+create(): Promise&lt;Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CardRepository" data-compartment="2">bankId: ObjectId</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CardRepository" data-compartment="2">holderName: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CardRepository" data-compartment="2">last4: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="CardRepository" data-compartment="2">creditLimit: number</text>
+<text x="0.0" y="95.1" stroke="none" data-name="CardRepository" data-compartment="2">availableLimit: number</text>
+<text x="0.0" y="111.3" stroke="none" data-name="CardRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { ...</text>
+<text x="0.0" y="127.5" stroke="none" data-name="CardRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="143.7" stroke="none" data-name="CardRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="159.9" stroke="none" data-name="CardRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="176.1" stroke="none" data-name="CardRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="192.3" stroke="none" data-name="CardRepository" data-compartment="2">+findByCustomer(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="208.5" stroke="none" data-name="CardRepository" data-compartment="2">bankId: ObjectId</text>
+<text x="0.0" y="224.7" stroke="none" data-name="CardRepository" data-compartment="2">holderName: string</text>
+<text x="0.0" y="240.9" stroke="none" data-name="CardRepository" data-compartment="2">last4: string</text>
+<text x="0.0" y="257.1" stroke="none" data-name="CardRepository" data-compartment="2">creditLimit: number</text>
+<text x="0.0" y="273.3" stroke="none" data-name="CardRepository" data-compartment="2">availableLimit: number</text>
+<text x="0.0" y="289.5" stroke="none" data-name="CardRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { ...</text>
+<text x="0.0" y="305.7" stroke="none" data-name="CardRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="321.9" stroke="none" data-name="CardRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="338.1" stroke="none" data-name="CardRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="354.3" stroke="none" data-name="CardRepository" data-compartment="2">})[], ... 4 more ..., {}&gt;</text>
+<text x="0.0" y="370.5" stroke="none" data-name="CardRepository" data-compartment="2">+findByIdForCustomer(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="386.7" stroke="none" data-name="CardRepository" data-compartment="2">bankId: ObjectId</text>
+<text x="0.0" y="402.9" stroke="none" data-name="CardRepository" data-compartment="2">holderName: string</text>
+<text x="0.0" y="419.1" stroke="none" data-name="CardRepository" data-compartment="2">last4: string</text>
+<text x="0.0" y="435.3" stroke="none" data-name="CardRepository" data-compartment="2">creditLimit: number</text>
+<text x="0.0" y="451.5" stroke="none" data-name="CardRepository" data-compartment="2">availableLimit: number</text>
+<text x="0.0" y="467.7" stroke="none" data-name="CardRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { ...</text>
+<text x="0.0" y="483.9" stroke="none" data-name="CardRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="500.1" stroke="none" data-name="CardRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="516.3" stroke="none" data-name="CardRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="532.5" stroke="none" data-name="CardRepository" data-compartment="2">}) | null, ... 4 more ..., {}&gt;</text>
+<text x="0.0" y="548.7" stroke="none" data-name="CardRepository" data-compartment="2">+reserveLimit(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CartRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="CartRepository">
+<rect x="4099.0" y="49.0" height="1222.0" width="639.0" data-name="CartRepository"></rect>
+<path d="M4099.0 81.0 L4738.0 81.0" fill="none" data-name="CartRepository"></path>
+<path d="M4099.0 89.0 L4738.0 89.0" fill="none" data-name="CartRepository"></path>
+</g>
+<g transform="translate(4099, 49)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CartRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CartRepository" data-compartment="0">
+<a id="src/repositories/cart.repository.ts.CartRepository" xlink:href="src/repositories/cart.repository.ts"><text x="311.5" y="14.1" stroke="none" text-anchor="middle" data-name="CartRepository" data-compartment="0">CartRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(4099, 81)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CartRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CartRepository" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(4099, 89)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CartRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CartRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="CartRepository" data-compartment="2">+findByCustomer(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CartRepository" data-compartment="2">items: DocumentArray&lt;{ bookId: ObjectId</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CartRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CartRepository" data-compartment="2">}, Subdocument&lt;ObjectId, any, { bookId: ObjectId</text>
+<text x="0.0" y="78.9" stroke="none" data-name="CartRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="95.1" stroke="none" data-name="CartRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="111.3" stroke="none" data-name="CartRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="127.5" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { ...</text>
+<text x="0.0" y="143.7" stroke="none" data-name="CartRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="159.9" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="176.1" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="192.3" stroke="none" data-name="CartRepository" data-compartment="2">}) | null, ... 4 more ......</text>
+<text x="0.0" y="208.5" stroke="none" data-name="CartRepository" data-compartment="2">+findRawByCustomer(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="224.7" stroke="none" data-name="CartRepository" data-compartment="2">items: DocumentArray&lt;{ bookId: ObjectId</text>
+<text x="0.0" y="240.9" stroke="none" data-name="CartRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="257.1" stroke="none" data-name="CartRepository" data-compartment="2">}, Subdocument&lt;ObjectId, any, { bookId: ObjectId</text>
+<text x="0.0" y="273.3" stroke="none" data-name="CartRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="289.5" stroke="none" data-name="CartRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="305.7" stroke="none" data-name="CartRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="321.9" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { ...</text>
+<text x="0.0" y="338.1" stroke="none" data-name="CartRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="354.3" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="370.5" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="386.7" stroke="none" data-name="CartRepository" data-compartment="2">}) | null, ... 4 more ......</text>
+<text x="0.0" y="402.9" stroke="none" data-name="CartRepository" data-compartment="2">+addItem(): Promise&lt;Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="419.1" stroke="none" data-name="CartRepository" data-compartment="2">items: DocumentArray&lt;{ bookId: ObjectId</text>
+<text x="0.0" y="435.3" stroke="none" data-name="CartRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="451.5" stroke="none" data-name="CartRepository" data-compartment="2">}, Subdocument&lt;ObjectId, any, { bookId: ObjectId</text>
+<text x="0.0" y="467.7" stroke="none" data-name="CartRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="483.9" stroke="none" data-name="CartRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="500.1" stroke="none" data-name="CartRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="516.3" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { ...</text>
+<text x="0.0" y="532.5" stroke="none" data-name="CartRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="548.7" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="564.9" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="581.1" stroke="none" data-name="CartRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="597.3" stroke="none" data-name="CartRepository" data-compartment="2">+updateItem(): Promise&lt;(Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="613.5" stroke="none" data-name="CartRepository" data-compartment="2">items: DocumentArray&lt;{ bookId: ObjectId</text>
+<text x="0.0" y="629.7" stroke="none" data-name="CartRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="645.9" stroke="none" data-name="CartRepository" data-compartment="2">}, Subdocument&lt;ObjectId, any, { bookId: ObjectId</text>
+<text x="0.0" y="662.1" stroke="none" data-name="CartRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="678.3" stroke="none" data-name="CartRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="694.5" stroke="none" data-name="CartRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="710.7" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { ...</text>
+<text x="0.0" y="726.9" stroke="none" data-name="CartRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="743.1" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="759.3" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="775.5" stroke="none" data-name="CartRepository" data-compartment="2">}) | null&gt;</text>
+<text x="0.0" y="791.7" stroke="none" data-name="CartRepository" data-compartment="2">+removeItem(): Promise&lt;(Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="807.9" stroke="none" data-name="CartRepository" data-compartment="2">items: DocumentArray&lt;{ bookId: ObjectId</text>
+<text x="0.0" y="824.1" stroke="none" data-name="CartRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="840.3" stroke="none" data-name="CartRepository" data-compartment="2">}, Subdocument&lt;ObjectId, any, { bookId: ObjectId</text>
+<text x="0.0" y="856.5" stroke="none" data-name="CartRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="872.7" stroke="none" data-name="CartRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="888.9" stroke="none" data-name="CartRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="905.1" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { ...</text>
+<text x="0.0" y="921.3" stroke="none" data-name="CartRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="937.5" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="953.7" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="969.9" stroke="none" data-name="CartRepository" data-compartment="2">}) | null&gt;</text>
+<text x="0.0" y="986.1" stroke="none" data-name="CartRepository" data-compartment="2">+clear(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="1002.3" stroke="none" data-name="CartRepository" data-compartment="2">items: DocumentArray&lt;{ bookId: ObjectId</text>
+<text x="0.0" y="1018.5" stroke="none" data-name="CartRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="1034.7" stroke="none" data-name="CartRepository" data-compartment="2">}, Subdocument&lt;ObjectId, any, { bookId: ObjectId</text>
+<text x="0.0" y="1050.9" stroke="none" data-name="CartRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="1067.1" stroke="none" data-name="CartRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="1083.3" stroke="none" data-name="CartRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="1099.5" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; DefaultTimestampProps, {}, { ...</text>
+<text x="0.0" y="1115.7" stroke="none" data-name="CartRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="1131.9" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="1148.1" stroke="none" data-name="CartRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="1164.3" stroke="none" data-name="CartRepository" data-compartment="2">}) | null, ... 4 more ......</text>
+
+</g>
+</g>
+</g>
+<g data-name="CustomerRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="CustomerRepository">
+<rect x="4778.0" y="364.5" height="591.0" width="506.0" data-name="CustomerRepository"></rect>
+<path d="M4778.0 396.5 L5284.0 396.5" fill="none" data-name="CustomerRepository"></path>
+<path d="M4778.0 404.5 L5284.0 404.5" fill="none" data-name="CustomerRepository"></path>
+</g>
+<g transform="translate(4778, 364.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CustomerRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CustomerRepository" data-compartment="0">
+<a id="src/repositories/customer.repository.ts.CustomerRepository" xlink:href="src/repositories/customer.repository.ts"><text x="245.0" y="14.1" stroke="none" text-anchor="middle" data-name="CustomerRepository" data-compartment="0">CustomerRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(4778, 396.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CustomerRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CustomerRepository" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(4778, 404.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CustomerRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CustomerRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="CustomerRepository" data-compartment="2">+findByEmail(): Query&lt;(Document&lt;unknown, {}, { name: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CustomerRepository" data-compartment="2">createdAt: NativeDate</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CustomerRepository" data-compartment="2">email: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CustomerRepository" data-compartment="2">passwordHash: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="CustomerRepository" data-compartment="2">}, {}, DefaultSchemaOptions&gt; &amp; { name: string</text>
+<text x="0.0" y="95.1" stroke="none" data-name="CustomerRepository" data-compartment="2">createdAt: NativeDate</text>
+<text x="0.0" y="111.3" stroke="none" data-name="CustomerRepository" data-compartment="2">email: string</text>
+<text x="0.0" y="127.5" stroke="none" data-name="CustomerRepository" data-compartment="2">passwordHash: string</text>
+<text x="0.0" y="143.7" stroke="none" data-name="CustomerRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="159.9" stroke="none" data-name="CustomerRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="176.1" stroke="none" data-name="CustomerRepository" data-compartment="2">}) | null, ... 4 more ..., {}&gt;</text>
+<text x="0.0" y="192.3" stroke="none" data-name="CustomerRepository" data-compartment="2">+findById(): Query&lt;(Document&lt;unknown, {}, { name: string</text>
+<text x="0.0" y="208.5" stroke="none" data-name="CustomerRepository" data-compartment="2">createdAt: NativeDate</text>
+<text x="0.0" y="224.7" stroke="none" data-name="CustomerRepository" data-compartment="2">email: string</text>
+<text x="0.0" y="240.9" stroke="none" data-name="CustomerRepository" data-compartment="2">passwordHash: string</text>
+<text x="0.0" y="257.1" stroke="none" data-name="CustomerRepository" data-compartment="2">}, {}, DefaultSchemaOptions&gt; &amp; { name: string</text>
+<text x="0.0" y="273.3" stroke="none" data-name="CustomerRepository" data-compartment="2">createdAt: NativeDate</text>
+<text x="0.0" y="289.5" stroke="none" data-name="CustomerRepository" data-compartment="2">email: string</text>
+<text x="0.0" y="305.7" stroke="none" data-name="CustomerRepository" data-compartment="2">passwordHash: string</text>
+<text x="0.0" y="321.9" stroke="none" data-name="CustomerRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="338.1" stroke="none" data-name="CustomerRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="354.3" stroke="none" data-name="CustomerRepository" data-compartment="2">}) | null, ... 4 more ..., {}&gt;</text>
+<text x="0.0" y="370.5" stroke="none" data-name="CustomerRepository" data-compartment="2">+create(): Promise&lt;Document&lt;unknown, {}, { name: string</text>
+<text x="0.0" y="386.7" stroke="none" data-name="CustomerRepository" data-compartment="2">createdAt: NativeDate</text>
+<text x="0.0" y="402.9" stroke="none" data-name="CustomerRepository" data-compartment="2">email: string</text>
+<text x="0.0" y="419.1" stroke="none" data-name="CustomerRepository" data-compartment="2">passwordHash: string</text>
+<text x="0.0" y="435.3" stroke="none" data-name="CustomerRepository" data-compartment="2">}, {}, DefaultSchemaOptions&gt; &amp; { name: string</text>
+<text x="0.0" y="451.5" stroke="none" data-name="CustomerRepository" data-compartment="2">createdAt: NativeDate</text>
+<text x="0.0" y="467.7" stroke="none" data-name="CustomerRepository" data-compartment="2">email: string</text>
+<text x="0.0" y="483.9" stroke="none" data-name="CustomerRepository" data-compartment="2">passwordHash: string</text>
+<text x="0.0" y="500.1" stroke="none" data-name="CustomerRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="516.3" stroke="none" data-name="CustomerRepository" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="532.5" stroke="none" data-name="CustomerRepository" data-compartment="2">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="OrderRepository">
+<g fill="#eee8d5" stroke="#33322E" data-name="OrderRepository">
+<rect x="5324.0" y="0.0" height="1320.0" width="646.0" data-name="OrderRepository"></rect>
+<path d="M5324.0 32.0 L5970.0 32.0" fill="none" data-name="OrderRepository"></path>
+<path d="M5324.0 40.0 L5970.0 40.0" fill="none" data-name="OrderRepository"></path>
+</g>
+<g transform="translate(5324, 0)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="OrderRepository" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="OrderRepository" data-compartment="0">
+<a id="src/repositories/order.repository.ts.OrderRepository" xlink:href="src/repositories/order.repository.ts"><text x="315.0" y="14.1" stroke="none" text-anchor="middle" data-name="OrderRepository" data-compartment="0">OrderRepository</text></a>
+
+</g>
+</g>
+<g transform="translate(5324, 32)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OrderRepository" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="OrderRepository" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(5324, 40)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OrderRepository" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="OrderRepository" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="OrderRepository" data-compartment="2">+create(): Promise&lt;Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="30.3" stroke="none" data-name="OrderRepository" data-compartment="2">items: DocumentArray&lt;{ title: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="OrderRepository" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="62.7" stroke="none" data-name="OrderRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="78.9" stroke="none" data-name="OrderRepository" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="95.1" stroke="none" data-name="OrderRepository" data-compartment="2">}, Subdocument&lt;ObjectId, any, { title: string</text>
+<text x="0.0" y="111.3" stroke="none" data-name="OrderRepository" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="127.5" stroke="none" data-name="OrderRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="143.7" stroke="none" data-name="OrderRepository" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="159.9" stroke="none" data-name="OrderRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="176.1" stroke="none" data-name="OrderRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="192.3" stroke="none" data-name="OrderRepository" data-compartment="2">... 12 more ...</text>
+<text x="0.0" y="208.5" stroke="none" data-name="OrderRepository" data-compartment="2">cardId?: ObjectId | ... 1 more ... ...</text>
+<text x="0.0" y="224.7" stroke="none" data-name="OrderRepository" data-compartment="2">+findByCustomer(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="240.9" stroke="none" data-name="OrderRepository" data-compartment="2">items: DocumentArray&lt;{ title: string</text>
+<text x="0.0" y="257.1" stroke="none" data-name="OrderRepository" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="273.3" stroke="none" data-name="OrderRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="289.5" stroke="none" data-name="OrderRepository" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="305.7" stroke="none" data-name="OrderRepository" data-compartment="2">}, Subdocument&lt;ObjectId, any, { title: string</text>
+<text x="0.0" y="321.9" stroke="none" data-name="OrderRepository" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="338.1" stroke="none" data-name="OrderRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="354.3" stroke="none" data-name="OrderRepository" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="370.5" stroke="none" data-name="OrderRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="386.7" stroke="none" data-name="OrderRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="402.9" stroke="none" data-name="OrderRepository" data-compartment="2">... 12 more ...</text>
+<text x="0.0" y="419.1" stroke="none" data-name="OrderRepository" data-compartment="2">cardId?: ObjectId | ... 1 more ... |...</text>
+<text x="0.0" y="435.3" stroke="none" data-name="OrderRepository" data-compartment="2">+findByIdForCustomer(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="451.5" stroke="none" data-name="OrderRepository" data-compartment="2">items: DocumentArray&lt;{ title: string</text>
+<text x="0.0" y="467.7" stroke="none" data-name="OrderRepository" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="483.9" stroke="none" data-name="OrderRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="500.1" stroke="none" data-name="OrderRepository" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="516.3" stroke="none" data-name="OrderRepository" data-compartment="2">}, Subdocument&lt;ObjectId, any, { title: string</text>
+<text x="0.0" y="532.5" stroke="none" data-name="OrderRepository" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="548.7" stroke="none" data-name="OrderRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="564.9" stroke="none" data-name="OrderRepository" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="581.1" stroke="none" data-name="OrderRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="597.3" stroke="none" data-name="OrderRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="613.5" stroke="none" data-name="OrderRepository" data-compartment="2">... 12 more ...</text>
+<text x="0.0" y="629.7" stroke="none" data-name="OrderRepository" data-compartment="2">cardId?: ObjectId | ... 1 more ... |...</text>
+<text x="0.0" y="645.9" stroke="none" data-name="OrderRepository" data-compartment="2">+updatePayment(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="662.1" stroke="none" data-name="OrderRepository" data-compartment="2">items: DocumentArray&lt;{ title: string</text>
+<text x="0.0" y="678.3" stroke="none" data-name="OrderRepository" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="694.5" stroke="none" data-name="OrderRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="710.7" stroke="none" data-name="OrderRepository" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="726.9" stroke="none" data-name="OrderRepository" data-compartment="2">}, Subdocument&lt;ObjectId, any, { title: string</text>
+<text x="0.0" y="743.1" stroke="none" data-name="OrderRepository" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="759.3" stroke="none" data-name="OrderRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="775.5" stroke="none" data-name="OrderRepository" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="791.7" stroke="none" data-name="OrderRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="807.9" stroke="none" data-name="OrderRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="824.1" stroke="none" data-name="OrderRepository" data-compartment="2">... 12 more ...</text>
+<text x="0.0" y="840.3" stroke="none" data-name="OrderRepository" data-compartment="2">cardId?: ObjectId | ... 1 more ... |...</text>
+<text x="0.0" y="856.5" stroke="none" data-name="OrderRepository" data-compartment="2">+findExpired(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="872.7" stroke="none" data-name="OrderRepository" data-compartment="2">items: DocumentArray&lt;{ title: string</text>
+<text x="0.0" y="888.9" stroke="none" data-name="OrderRepository" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="905.1" stroke="none" data-name="OrderRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="921.3" stroke="none" data-name="OrderRepository" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="937.5" stroke="none" data-name="OrderRepository" data-compartment="2">}, Subdocument&lt;ObjectId, any, { title: string</text>
+<text x="0.0" y="953.7" stroke="none" data-name="OrderRepository" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="969.9" stroke="none" data-name="OrderRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="986.1" stroke="none" data-name="OrderRepository" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="1002.3" stroke="none" data-name="OrderRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="1018.5" stroke="none" data-name="OrderRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="1034.7" stroke="none" data-name="OrderRepository" data-compartment="2">... 12 more ...</text>
+<text x="0.0" y="1050.9" stroke="none" data-name="OrderRepository" data-compartment="2">cardId?: ObjectId | ... 1 more ... |...</text>
+<text x="0.0" y="1067.1" stroke="none" data-name="OrderRepository" data-compartment="2">+cancelOneIfExpired(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="1083.3" stroke="none" data-name="OrderRepository" data-compartment="2">items: DocumentArray&lt;{ title: string</text>
+<text x="0.0" y="1099.5" stroke="none" data-name="OrderRepository" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="1115.7" stroke="none" data-name="OrderRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="1131.9" stroke="none" data-name="OrderRepository" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="1148.1" stroke="none" data-name="OrderRepository" data-compartment="2">}, Subdocument&lt;ObjectId, any, { title: string</text>
+<text x="0.0" y="1164.3" stroke="none" data-name="OrderRepository" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="1180.5" stroke="none" data-name="OrderRepository" data-compartment="2">quantity: number</text>
+<text x="0.0" y="1196.7" stroke="none" data-name="OrderRepository" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="1212.9" stroke="none" data-name="OrderRepository" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="1229.1" stroke="none" data-name="OrderRepository" data-compartment="2">}&gt;</text>
+<text x="0.0" y="1245.3" stroke="none" data-name="OrderRepository" data-compartment="2">... 12 more ...</text>
+<text x="0.0" y="1261.5" stroke="none" data-name="OrderRepository" data-compartment="2">cardId?: ObjectId | ... 1 more ... |...</text>
+
+</g>
+</g>
+</g>
+<g data-name="AuthService">
+<g fill="#eee8d5" stroke="#33322E" data-name="AuthService">
+<rect x="6010.0" y="551.0" height="218.0" width="269.0" data-name="AuthService"></rect>
+<path d="M6010.0 583.0 L6279.0 583.0" fill="none" data-name="AuthService"></path>
+<path d="M6010.0 591.0 L6279.0 591.0" fill="none" data-name="AuthService"></path>
+</g>
+<g transform="translate(6010, 551)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AuthService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AuthService" data-compartment="0">
+<a id="src/services/auth.service.ts.AuthService" xlink:href="src/services/auth.service.ts"><text x="126.5" y="14.1" stroke="none" text-anchor="middle" data-name="AuthService" data-compartment="0">AuthService</text></a>
+
+</g>
+</g>
+<g transform="translate(6010, 583)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AuthService" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(6010, 591)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuthService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="AuthService" data-compartment="2">+register(): Promise&lt;{ id: any</text>
+<text x="0.0" y="30.3" stroke="none" data-name="AuthService" data-compartment="2">name: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="AuthService" data-compartment="2">email: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="AuthService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="AuthService" data-compartment="2">+login(): Promise&lt;{ token: string</text>
+<text x="0.0" y="95.1" stroke="none" data-name="AuthService" data-compartment="2">customer: { id: any</text>
+<text x="0.0" y="111.3" stroke="none" data-name="AuthService" data-compartment="2">name: string</text>
+<text x="0.0" y="127.5" stroke="none" data-name="AuthService" data-compartment="2">email: string</text>
+<text x="0.0" y="143.7" stroke="none" data-name="AuthService" data-compartment="2">}</text>
+<text x="0.0" y="159.9" stroke="none" data-name="AuthService" data-compartment="2">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="BankService">
+<g fill="#eee8d5" stroke="#33322E" data-name="BankService">
+<rect x="6319.0" y="478.0" height="364.0" width="474.0" data-name="BankService"></rect>
+<path d="M6319.0 510.0 L6793.0 510.0" fill="none" data-name="BankService"></path>
+<path d="M6319.0 518.0 L6793.0 518.0" fill="none" data-name="BankService"></path>
+</g>
+<g transform="translate(6319, 478)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="BankService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="BankService" data-compartment="0">
+<a id="src/services/bank.service.ts.BankService" xlink:href="src/services/bank.service.ts"><text x="229.0" y="14.1" stroke="none" text-anchor="middle" data-name="BankService" data-compartment="0">BankService</text></a>
+
+</g>
+</g>
+<g transform="translate(6319, 510)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BankService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="BankService" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(6319, 518)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BankService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="BankService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="BankService" data-compartment="2">+list(): Query&lt;(Document&lt;unknown, {}, { name: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="BankService" data-compartment="2">code: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="BankService" data-compartment="2">} &amp; DefaultTimestampProps, {}, { timestamps: true</text>
+<text x="0.0" y="62.7" stroke="none" data-name="BankService" data-compartment="2">}&gt; &amp; { name: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="BankService" data-compartment="2">code: string</text>
+<text x="0.0" y="95.1" stroke="none" data-name="BankService" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="111.3" stroke="none" data-name="BankService" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="127.5" stroke="none" data-name="BankService" data-compartment="2">})[], ... 4 more ..., {}&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="BankService" data-compartment="2">+create(): Promise&lt;Document&lt;unknown, {}, { name: string</text>
+<text x="0.0" y="159.9" stroke="none" data-name="BankService" data-compartment="2">code: string</text>
+<text x="0.0" y="176.1" stroke="none" data-name="BankService" data-compartment="2">} &amp; DefaultTimestampProps, {}, { timestamps: true</text>
+<text x="0.0" y="192.3" stroke="none" data-name="BankService" data-compartment="2">}&gt; &amp; { name: string</text>
+<text x="0.0" y="208.5" stroke="none" data-name="BankService" data-compartment="2">code: string</text>
+<text x="0.0" y="224.7" stroke="none" data-name="BankService" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="240.9" stroke="none" data-name="BankService" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="257.1" stroke="none" data-name="BankService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="273.3" stroke="none" data-name="BankService" data-compartment="2">+authorize(): Promise&lt;{ status: PaymentStatus</text>
+<text x="0.0" y="289.5" stroke="none" data-name="BankService" data-compartment="2">reference: string</text>
+<text x="0.0" y="305.7" stroke="none" data-name="BankService" data-compartment="2">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CardService">
+<g fill="#eee8d5" stroke="#33322E" data-name="CardService">
+<rect x="6833.0" y="462.0" height="396.0" width="269.0" data-name="CardService"></rect>
+<path d="M6833.0 494.0 L7102.0 494.0" fill="none" data-name="CardService"></path>
+<path d="M6833.0 502.0 L7102.0 502.0" fill="none" data-name="CardService"></path>
+</g>
+<g transform="translate(6833, 462)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CardService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CardService" data-compartment="0">
+<a id="src/services/card.service.ts.CardService" xlink:href="src/services/card.service.ts"><text x="126.5" y="14.1" stroke="none" text-anchor="middle" data-name="CardService" data-compartment="0">CardService</text></a>
+
+</g>
+</g>
+<g transform="translate(6833, 494)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CardService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CardService" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(6833, 502)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CardService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CardService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="CardService" data-compartment="2">+create(): Promise&lt;{ id: any</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CardService" data-compartment="2">holderName: any</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CardService" data-compartment="2">last4: any</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CardService" data-compartment="2">creditLimit: any</text>
+<text x="0.0" y="78.9" stroke="none" data-name="CardService" data-compartment="2">availableLimit: any</text>
+<text x="0.0" y="95.1" stroke="none" data-name="CardService" data-compartment="2">bank: { id: any</text>
+<text x="0.0" y="111.3" stroke="none" data-name="CardService" data-compartment="2">name: any</text>
+<text x="0.0" y="127.5" stroke="none" data-name="CardService" data-compartment="2">code: any</text>
+<text x="0.0" y="143.7" stroke="none" data-name="CardService" data-compartment="2">} | null</text>
+<text x="0.0" y="159.9" stroke="none" data-name="CardService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="176.1" stroke="none" data-name="CardService" data-compartment="2">+list(): Promise&lt;{ id: any</text>
+<text x="0.0" y="192.3" stroke="none" data-name="CardService" data-compartment="2">holderName: any</text>
+<text x="0.0" y="208.5" stroke="none" data-name="CardService" data-compartment="2">last4: any</text>
+<text x="0.0" y="224.7" stroke="none" data-name="CardService" data-compartment="2">creditLimit: any</text>
+<text x="0.0" y="240.9" stroke="none" data-name="CardService" data-compartment="2">availableLimit: any</text>
+<text x="0.0" y="257.1" stroke="none" data-name="CardService" data-compartment="2">bank: { id: any</text>
+<text x="0.0" y="273.3" stroke="none" data-name="CardService" data-compartment="2">name: any</text>
+<text x="0.0" y="289.5" stroke="none" data-name="CardService" data-compartment="2">code: any</text>
+<text x="0.0" y="305.7" stroke="none" data-name="CardService" data-compartment="2">} | null</text>
+<text x="0.0" y="321.9" stroke="none" data-name="CardService" data-compartment="2">}[]&gt;</text>
+<text x="0.0" y="338.1" stroke="none" data-name="CardService" data-compartment="2">+assertOwned(): Promise&lt;void&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CartService">
+<g fill="#eee8d5" stroke="#33322E" data-name="CartService">
+<rect x="7142.0" y="373.0" height="574.0" width="348.0" data-name="CartService"></rect>
+<path d="M7142.0 405.0 L7490.0 405.0" fill="none" data-name="CartService"></path>
+<path d="M7142.0 413.0 L7490.0 413.0" fill="none" data-name="CartService"></path>
+</g>
+<g transform="translate(7142, 373)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CartService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CartService" data-compartment="0">
+<a id="src/services/cart.service.ts.CartService" xlink:href="src/services/cart.service.ts"><text x="166.0" y="14.1" stroke="none" text-anchor="middle" data-name="CartService" data-compartment="0">CartService</text></a>
+
+</g>
+</g>
+<g transform="translate(7142, 405)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CartService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CartService" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(7142, 413)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CartService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CartService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="CartService" data-compartment="2">+get(): Promise&lt;{ items: { bookId: any</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CartService" data-compartment="2">title: any</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CartService" data-compartment="2">unitPrice: any</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CartService" data-compartment="2">quantity: any</text>
+<text x="0.0" y="78.9" stroke="none" data-name="CartService" data-compartment="2">lineTotal: number</text>
+<text x="0.0" y="95.1" stroke="none" data-name="CartService" data-compartment="2">}[]</text>
+<text x="0.0" y="111.3" stroke="none" data-name="CartService" data-compartment="2">subtotal: number</text>
+<text x="0.0" y="127.5" stroke="none" data-name="CartService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="CartService" data-compartment="2">+add(): Promise&lt;{ items: { bookId: any</text>
+<text x="0.0" y="159.9" stroke="none" data-name="CartService" data-compartment="2">title: any</text>
+<text x="0.0" y="176.1" stroke="none" data-name="CartService" data-compartment="2">unitPrice: any</text>
+<text x="0.0" y="192.3" stroke="none" data-name="CartService" data-compartment="2">quantity: any</text>
+<text x="0.0" y="208.5" stroke="none" data-name="CartService" data-compartment="2">lineTotal: number</text>
+<text x="0.0" y="224.7" stroke="none" data-name="CartService" data-compartment="2">}[]</text>
+<text x="0.0" y="240.9" stroke="none" data-name="CartService" data-compartment="2">subtotal: number</text>
+<text x="0.0" y="257.1" stroke="none" data-name="CartService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="273.3" stroke="none" data-name="CartService" data-compartment="2">+update(): Promise&lt;{ items: { bookId: any</text>
+<text x="0.0" y="289.5" stroke="none" data-name="CartService" data-compartment="2">title: any</text>
+<text x="0.0" y="305.7" stroke="none" data-name="CartService" data-compartment="2">unitPrice: any</text>
+<text x="0.0" y="321.9" stroke="none" data-name="CartService" data-compartment="2">quantity: any</text>
+<text x="0.0" y="338.1" stroke="none" data-name="CartService" data-compartment="2">lineTotal: number</text>
+<text x="0.0" y="354.3" stroke="none" data-name="CartService" data-compartment="2">}[]</text>
+<text x="0.0" y="370.5" stroke="none" data-name="CartService" data-compartment="2">subtotal: number</text>
+<text x="0.0" y="386.7" stroke="none" data-name="CartService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="402.9" stroke="none" data-name="CartService" data-compartment="2">+remove(): Promise&lt;{ items: { bookId: any</text>
+<text x="0.0" y="419.1" stroke="none" data-name="CartService" data-compartment="2">title: any</text>
+<text x="0.0" y="435.3" stroke="none" data-name="CartService" data-compartment="2">unitPrice: any</text>
+<text x="0.0" y="451.5" stroke="none" data-name="CartService" data-compartment="2">quantity: any</text>
+<text x="0.0" y="467.7" stroke="none" data-name="CartService" data-compartment="2">lineTotal: number</text>
+<text x="0.0" y="483.9" stroke="none" data-name="CartService" data-compartment="2">}[]</text>
+<text x="0.0" y="500.1" stroke="none" data-name="CartService" data-compartment="2">subtotal: number</text>
+<text x="0.0" y="516.3" stroke="none" data-name="CartService" data-compartment="2">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CatalogService">
+<g fill="#eee8d5" stroke="#33322E" data-name="CatalogService">
+<rect x="7530.0" y="437.5" height="445.0" width="433.0" data-name="CatalogService"></rect>
+<path d="M7530.0 469.5 L7963.0 469.5" fill="none" data-name="CatalogService"></path>
+<path d="M7530.0 477.5 L7963.0 477.5" fill="none" data-name="CatalogService"></path>
+</g>
+<g transform="translate(7530, 437.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CatalogService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CatalogService" data-compartment="0">
+<a id="src/services/catalog.service.ts.CatalogService" xlink:href="src/services/catalog.service.ts"><text x="208.5" y="14.1" stroke="none" text-anchor="middle" data-name="CatalogService" data-compartment="0">CatalogService</text></a>
+
+</g>
+</g>
+<g transform="translate(7530, 469.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CatalogService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CatalogService" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(7530, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CatalogService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CatalogService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="CatalogService" data-compartment="2">+list(): Query&lt;(Document&lt;unknown, {}, { title: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CatalogService" data-compartment="2">author: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CatalogService" data-compartment="2">price: number</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CatalogService" data-compartment="2">stock: number</text>
+<text x="0.0" y="78.9" stroke="none" data-name="CatalogService" data-compartment="2">} &amp; DefaultTimestampProps, {}, { timestamps: true</text>
+<text x="0.0" y="95.1" stroke="none" data-name="CatalogService" data-compartment="2">}&gt; &amp; { title: string</text>
+<text x="0.0" y="111.3" stroke="none" data-name="CatalogService" data-compartment="2">author: string</text>
+<text x="0.0" y="127.5" stroke="none" data-name="CatalogService" data-compartment="2">price: number</text>
+<text x="0.0" y="143.7" stroke="none" data-name="CatalogService" data-compartment="2">stock: number</text>
+<text x="0.0" y="159.9" stroke="none" data-name="CatalogService" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="176.1" stroke="none" data-name="CatalogService" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="192.3" stroke="none" data-name="CatalogService" data-compartment="2">})[], ... 4 more ..., {}&gt;</text>
+<text x="0.0" y="208.5" stroke="none" data-name="CatalogService" data-compartment="2">+get(): Promise&lt;Document&lt;unknown, {}, { title: string</text>
+<text x="0.0" y="224.7" stroke="none" data-name="CatalogService" data-compartment="2">author: string</text>
+<text x="0.0" y="240.9" stroke="none" data-name="CatalogService" data-compartment="2">price: number</text>
+<text x="0.0" y="257.1" stroke="none" data-name="CatalogService" data-compartment="2">stock: number</text>
+<text x="0.0" y="273.3" stroke="none" data-name="CatalogService" data-compartment="2">} &amp; DefaultTimestampProps, {}, { timestamps: true</text>
+<text x="0.0" y="289.5" stroke="none" data-name="CatalogService" data-compartment="2">}&gt; &amp; { title: string</text>
+<text x="0.0" y="305.7" stroke="none" data-name="CatalogService" data-compartment="2">author: string</text>
+<text x="0.0" y="321.9" stroke="none" data-name="CatalogService" data-compartment="2">price: number</text>
+<text x="0.0" y="338.1" stroke="none" data-name="CatalogService" data-compartment="2">stock: number</text>
+<text x="0.0" y="354.3" stroke="none" data-name="CatalogService" data-compartment="2">} &amp; DefaultTimestampProps &amp; { ...</text>
+<text x="0.0" y="370.5" stroke="none" data-name="CatalogService" data-compartment="2">} &amp; { ...</text>
+<text x="0.0" y="386.7" stroke="none" data-name="CatalogService" data-compartment="2">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="OrderService">
+<g fill="#eee8d5" stroke="#33322E" data-name="OrderService">
+<rect x="8003.0" y="194.5" height="931.0" width="631.0" data-name="OrderService"></rect>
+<path d="M8003.0 226.5 L8634.0 226.5" fill="none" data-name="OrderService"></path>
+<path d="M8003.0 234.5 L8634.0 234.5" fill="none" data-name="OrderService"></path>
+</g>
+<g transform="translate(8003, 194.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="OrderService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="OrderService" data-compartment="0">
+<a id="src/services/order.service.ts.OrderService" xlink:href="src/services/order.service.ts"><text x="307.5" y="14.1" stroke="none" text-anchor="middle" data-name="OrderService" data-compartment="0">OrderService</text></a>
+
+</g>
+</g>
+<g transform="translate(8003, 226.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OrderService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="OrderService" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(8003, 234.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OrderService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="OrderService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="OrderService" data-compartment="2">+preview(): Promise&lt;{ profile: CustomerProfile</text>
+<text x="0.0" y="30.3" stroke="none" data-name="OrderService" data-compartment="2">discountRate: number</text>
+<text x="0.0" y="46.5" stroke="none" data-name="OrderService" data-compartment="2">discount: number</text>
+<text x="0.0" y="62.7" stroke="none" data-name="OrderService" data-compartment="2">shippingRate: number</text>
+<text x="0.0" y="78.9" stroke="none" data-name="OrderService" data-compartment="2">shipping: number</text>
+<text x="0.0" y="95.1" stroke="none" data-name="OrderService" data-compartment="2">total: number</text>
+<text x="0.0" y="111.3" stroke="none" data-name="OrderService" data-compartment="2">items: { bookId: any</text>
+<text x="0.0" y="127.5" stroke="none" data-name="OrderService" data-compartment="2">title: any</text>
+<text x="0.0" y="143.7" stroke="none" data-name="OrderService" data-compartment="2">unitPrice: any</text>
+<text x="0.0" y="159.9" stroke="none" data-name="OrderService" data-compartment="2">quantity: any</text>
+<text x="0.0" y="176.1" stroke="none" data-name="OrderService" data-compartment="2">lineTotal: number</text>
+<text x="0.0" y="192.3" stroke="none" data-name="OrderService" data-compartment="2">}[]</text>
+<text x="0.0" y="208.5" stroke="none" data-name="OrderService" data-compartment="2">subtotal: number</text>
+<text x="0.0" y="224.7" stroke="none" data-name="OrderService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="240.9" stroke="none" data-name="OrderService" data-compartment="2">+checkout(): Promise&lt;{ order: (Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="257.1" stroke="none" data-name="OrderService" data-compartment="2">items: DocumentArray&lt;{ title: string</text>
+<text x="0.0" y="273.3" stroke="none" data-name="OrderService" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="289.5" stroke="none" data-name="OrderService" data-compartment="2">quantity: number</text>
+<text x="0.0" y="305.7" stroke="none" data-name="OrderService" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="321.9" stroke="none" data-name="OrderService" data-compartment="2">}, Subdocument&lt;ObjectId, any, { title: string</text>
+<text x="0.0" y="338.1" stroke="none" data-name="OrderService" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="354.3" stroke="none" data-name="OrderService" data-compartment="2">quantity: number</text>
+<text x="0.0" y="370.5" stroke="none" data-name="OrderService" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="386.7" stroke="none" data-name="OrderService" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="402.9" stroke="none" data-name="OrderService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="419.1" stroke="none" data-name="OrderService" data-compartment="2">... 12 more ...</text>
+<text x="0.0" y="435.3" stroke="none" data-name="OrderService" data-compartment="2">cardId?: ObjectId | ... 1...</text>
+<text x="0.0" y="451.5" stroke="none" data-name="OrderService" data-compartment="2">+list(): Query&lt;(Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="467.7" stroke="none" data-name="OrderService" data-compartment="2">items: DocumentArray&lt;{ title: string</text>
+<text x="0.0" y="483.9" stroke="none" data-name="OrderService" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="500.1" stroke="none" data-name="OrderService" data-compartment="2">quantity: number</text>
+<text x="0.0" y="516.3" stroke="none" data-name="OrderService" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="532.5" stroke="none" data-name="OrderService" data-compartment="2">}, Subdocument&lt;ObjectId, any, { title: string</text>
+<text x="0.0" y="548.7" stroke="none" data-name="OrderService" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="564.9" stroke="none" data-name="OrderService" data-compartment="2">quantity: number</text>
+<text x="0.0" y="581.1" stroke="none" data-name="OrderService" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="597.3" stroke="none" data-name="OrderService" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="613.5" stroke="none" data-name="OrderService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="629.7" stroke="none" data-name="OrderService" data-compartment="2">... 12 more ...</text>
+<text x="0.0" y="645.9" stroke="none" data-name="OrderService" data-compartment="2">cardId?: ObjectId | ... 1 more ... |...</text>
+<text x="0.0" y="662.1" stroke="none" data-name="OrderService" data-compartment="2">+get(): Promise&lt;Document&lt;unknown, {}, { customerId: ObjectId</text>
+<text x="0.0" y="678.3" stroke="none" data-name="OrderService" data-compartment="2">items: DocumentArray&lt;{ title: string</text>
+<text x="0.0" y="694.5" stroke="none" data-name="OrderService" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="710.7" stroke="none" data-name="OrderService" data-compartment="2">quantity: number</text>
+<text x="0.0" y="726.9" stroke="none" data-name="OrderService" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="743.1" stroke="none" data-name="OrderService" data-compartment="2">}, Subdocument&lt;ObjectId, any, { title: string</text>
+<text x="0.0" y="759.3" stroke="none" data-name="OrderService" data-compartment="2">bookId: ObjectId</text>
+<text x="0.0" y="775.5" stroke="none" data-name="OrderService" data-compartment="2">quantity: number</text>
+<text x="0.0" y="791.7" stroke="none" data-name="OrderService" data-compartment="2">unitPrice: number</text>
+<text x="0.0" y="807.9" stroke="none" data-name="OrderService" data-compartment="2">}&gt; &amp; { ...</text>
+<text x="0.0" y="824.1" stroke="none" data-name="OrderService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="840.3" stroke="none" data-name="OrderService" data-compartment="2">... 12 more ...</text>
+<text x="0.0" y="856.5" stroke="none" data-name="OrderService" data-compartment="2">cardId?: ObjectId | ... 1 more ... ...</text>
+<text x="0.0" y="872.7" stroke="none" data-name="OrderService" data-compartment="2">+cancelExpired(): Promise&lt;number&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CheckoutInput">
+<g fill="lightblue" stroke="#33322E" data-name="CheckoutInput">
+<rect x="8674.0" y="543.0" height="234.0" width="318.0" data-name="CheckoutInput"></rect>
+<path d="M8674.0 575.0 L8992.0 575.0" fill="none" data-name="CheckoutInput"></path>
+<path d="M8674.0 769.0 L8992.0 769.0" fill="none" data-name="CheckoutInput"></path>
+</g>
+<g transform="translate(8674, 543)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CheckoutInput" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CheckoutInput" data-compartment="0">
+<a id="src/services/order.service.ts.CheckoutInput" xlink:href="src/services/order.service.ts"><text x="151.0" y="14.1" stroke="none" text-anchor="middle" data-name="CheckoutInput" data-compartment="0">CheckoutInput</text></a>
+
+</g>
+</g>
+<g transform="translate(8674, 575)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CheckoutInput" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CheckoutInput" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CheckoutInput" data-compartment="1">+region: Region</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CheckoutInput" data-compartment="1">+paymentMethod: PaymentMethod</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CheckoutInput" data-compartment="1">+cardId?: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CheckoutInput" data-compartment="1">+deliveryAddress: { postalCode: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="CheckoutInput" data-compartment="1">street: string</text>
+<text x="0.0" y="95.1" stroke="none" data-name="CheckoutInput" data-compartment="1">number: string</text>
+<text x="0.0" y="111.3" stroke="none" data-name="CheckoutInput" data-compartment="1">complement?: string | undefined</text>
+<text x="0.0" y="127.5" stroke="none" data-name="CheckoutInput" data-compartment="1">neighborhood: string</text>
+<text x="0.0" y="143.7" stroke="none" data-name="CheckoutInput" data-compartment="1">city: string</text>
+<text x="0.0" y="159.9" stroke="none" data-name="CheckoutInput" data-compartment="1">state: string</text>
+<text x="0.0" y="176.1" stroke="none" data-name="CheckoutInput" data-compartment="1">}</text>
+
+</g>
+</g>
+<g transform="translate(8674, 769)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CheckoutInput" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CheckoutInput" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="PaymentService">
+<g fill="#eee8d5" stroke="#33322E" data-name="PaymentService">
+<rect x="9032.0" y="607.5" height="105.0" width="339.0" data-name="PaymentService"></rect>
+<path d="M9032.0 639.5 L9371.0 639.5" fill="none" data-name="PaymentService"></path>
+<path d="M9032.0 647.5 L9371.0 647.5" fill="none" data-name="PaymentService"></path>
+</g>
+<g transform="translate(9032, 607.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="PaymentService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PaymentService" data-compartment="0">
+<a id="src/services/payment.service.ts.PaymentService" xlink:href="src/services/payment.service.ts"><text x="161.5" y="14.1" stroke="none" text-anchor="middle" data-name="PaymentService" data-compartment="0">PaymentService</text></a>
+
+</g>
+</g>
+<g transform="translate(9032, 639.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PaymentService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="PaymentService" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(9032, 647.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PaymentService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PaymentService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="PaymentService" data-compartment="2">+pay(): Promise&lt;{ status: PaymentStatus</text>
+<text x="0.0" y="30.3" stroke="none" data-name="PaymentService" data-compartment="2">reference: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="PaymentService" data-compartment="2">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="PaymentInput">
+<g fill="lightblue" stroke="#33322E" data-name="PaymentInput">
+<rect x="9913.0" y="599.5" height="121.0" width="223.0" data-name="PaymentInput"></rect>
+<path d="M9913.0 631.5 L10136.0 631.5" fill="none" data-name="PaymentInput"></path>
+<path d="M9913.0 712.5 L10136.0 712.5" fill="none" data-name="PaymentInput"></path>
+</g>
+<g transform="translate(9913, 599.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PaymentInput" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PaymentInput" data-compartment="0">
+<a id="src/services/payment.service.ts.PaymentInput" xlink:href="src/services/payment.service.ts"><text x="103.5" y="14.1" stroke="none" text-anchor="middle" data-name="PaymentInput" data-compartment="0">PaymentInput</text></a>
+
+</g>
+</g>
+<g transform="translate(9913, 631.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PaymentInput" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PaymentInput" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="PaymentInput" data-compartment="1">+method: PaymentMethod</text>
+<text x="0.0" y="30.3" stroke="none" data-name="PaymentInput" data-compartment="1">+amount: number</text>
+<text x="0.0" y="46.5" stroke="none" data-name="PaymentInput" data-compartment="1">+customerId: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="PaymentInput" data-compartment="1">+cardId?: string</text>
+
+</g>
+</g>
+<g transform="translate(9913, 712.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PaymentInput" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="PaymentInput" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="AppError">
+<g fill="#eee8d5" stroke="#33322E" data-name="AppError">
+<rect x="9687.0" y="624.0" height="72.0" width="186.0" data-name="AppError"></rect>
+<path d="M9687.0 656.0 L9873.0 656.0" fill="none" data-name="AppError"></path>
+<path d="M9687.0 688.0 L9873.0 688.0" fill="none" data-name="AppError"></path>
+</g>
+<g transform="translate(9687, 624)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AppError" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AppError" data-compartment="0">
+<a id="src/domain/errors/app-error.ts.AppError" xlink:href="src/domain/errors/app-error.ts"><text x="85.0" y="14.1" stroke="none" text-anchor="middle" data-name="AppError" data-compartment="0">AppError</text></a>
+
+</g>
+</g>
+<g transform="translate(9687, 656)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppError" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AppError" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="AppError" data-compartment="1">+statusCode: number</text>
+
+</g>
+</g>
+<g transform="translate(9687, 688)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppError" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AppError" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="PricingInput">
+<g fill="lightblue" stroke="#33322E" data-name="PricingInput">
+<rect x="9411.0" y="607.5" height="105.0" width="236.0" data-name="PricingInput"></rect>
+<path d="M9411.0 639.5 L9647.0 639.5" fill="none" data-name="PricingInput"></path>
+<path d="M9411.0 704.5 L9647.0 704.5" fill="none" data-name="PricingInput"></path>
+</g>
+<g transform="translate(9411, 607.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PricingInput" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PricingInput" data-compartment="0">
+<a id="src/domain/services/pricing.service.ts.PricingInput" xlink:href="src/domain/services/pricing.service.ts"><text x="110.0" y="14.1" stroke="none" text-anchor="middle" data-name="PricingInput" data-compartment="0">PricingInput</text></a>
+
+</g>
+</g>
+<g transform="translate(9411, 639.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PricingInput" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PricingInput" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="PricingInput" data-compartment="1">+subtotal: number</text>
+<text x="0.0" y="30.3" stroke="none" data-name="PricingInput" data-compartment="1">+yearsAsCustomer: number</text>
+<text x="0.0" y="46.5" stroke="none" data-name="PricingInput" data-compartment="1">+region: Region</text>
+
+</g>
+</g>
+<g transform="translate(9411, 704.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PricingInput" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="PricingInput" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="PricingResult">
+<g fill="lightblue" stroke="#33322E" data-name="PricingResult">
+<rect x="10176.0" y="583.5" height="153.0" width="211.0" data-name="PricingResult"></rect>
+<path d="M10176.0 615.5 L10387.0 615.5" fill="none" data-name="PricingResult"></path>
+<path d="M10176.0 728.5 L10387.0 728.5" fill="none" data-name="PricingResult"></path>
+</g>
+<g transform="translate(10176, 583.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PricingResult" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PricingResult" data-compartment="0">
+<a id="src/domain/services/pricing.service.ts.PricingResult" xlink:href="src/domain/services/pricing.service.ts"><text x="97.5" y="14.1" stroke="none" text-anchor="middle" data-name="PricingResult" data-compartment="0">PricingResult</text></a>
+
+</g>
+</g>
+<g transform="translate(10176, 615.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PricingResult" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PricingResult" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="PricingResult" data-compartment="1">+profile: CustomerProfile</text>
+<text x="0.0" y="30.3" stroke="none" data-name="PricingResult" data-compartment="1">+discountRate: number</text>
+<text x="0.0" y="46.5" stroke="none" data-name="PricingResult" data-compartment="1">+discount: number</text>
+<text x="0.0" y="62.7" stroke="none" data-name="PricingResult" data-compartment="1">+shippingRate: number</text>
+<text x="0.0" y="78.9" stroke="none" data-name="PricingResult" data-compartment="1">+shipping: number</text>
+<text x="0.0" y="95.1" stroke="none" data-name="PricingResult" data-compartment="1">+total: number</text>
+
+</g>
+</g>
+<g transform="translate(10176, 728.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PricingResult" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="PricingResult" data-compartment="2">
+
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>
