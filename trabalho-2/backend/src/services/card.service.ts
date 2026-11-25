@@ -11,8 +11,6 @@ function toDto(card: any) {
     id: card.id,
     holderName: card.holderName,
     last4: card.last4,
-    creditLimit: card.creditLimit,
-    availableLimit: card.availableLimit,
     bank: card.bankId
       ? { id: card.bankId.id, name: card.bankId.name, code: card.bankId.code }
       : null,
@@ -26,7 +24,6 @@ export class CardService {
       bankId: string;
       holderName: string;
       number: string;
-      creditLimit: number;
     },
   ) {
     if (!mongoose.isValidObjectId(input.bankId))
@@ -39,7 +36,6 @@ export class CardService {
       bankId: input.bankId,
       holderName: input.holderName,
       last4: input.number.slice(-4),
-      creditLimit: input.creditLimit,
     });
     return toDto(await cards.findByIdForCustomer(created.id, customerId));
   }

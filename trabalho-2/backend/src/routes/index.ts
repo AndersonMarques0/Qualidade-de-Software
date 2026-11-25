@@ -14,6 +14,7 @@ router.get("/cart",authenticate,CartController.get);router.post("/cart/items",au
 router.patch("/cart/items/:bookId",authenticate,CartController.update);router.delete("/cart/items/:bookId",authenticate,CartController.remove);
 router.post("/orders/preview",authenticate,OrderController.preview);router.post("/orders",authenticate,OrderController.checkout);
 router.get("/banks",BankController.list);router.post("/banks",authenticate,BankController.create);
+router.get("/account",authenticate,BankController.account);router.post("/account/deposit",authenticate,BankController.deposit);
 router.get("/cards",authenticate,CardController.list);router.post("/cards",authenticate,CardController.create);
 router.get("/orders",authenticate,OrderController.list);router.get("/orders/:id",authenticate,OrderController.get);
 export default router;

@@ -6,9 +6,8 @@ export class CardRepository {
     bankId: string;
     holderName: string;
     last4: string;
-    creditLimit: number;
   }) {
-    return CardModel.create({ ...data, availableLimit: data.creditLimit });
+    return CardModel.create(data);
   }
 
   findByCustomer(customerId: string) {
@@ -19,18 +18,5 @@ export class CardRepository {
 
   findByIdForCustomer(cardId: string, customerId: string) {
     return CardModel.findOne({ _id: cardId, customerId }).populate("bankId");
-  }
-
-  // Débito condicional: só desconta se ainda houver limite disponível.
-  async reserveLimit(
-    cardId: string,
-    customerId: string,
-    amount: number,
-  ): Promise<boolean> {
-    const result = await CardModel.updateOne(
-      { _id: cardId, customerId, availableLimit: { $gte: amount } },
-      { $inc: { availableLimit: -amount } },
-    );
-    return result.modifiedCount === 1;
   }
 }

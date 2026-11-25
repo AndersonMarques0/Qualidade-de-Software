@@ -1,5 +1,5 @@
 @startuml efetuar_pedido_gfc
-title GFC - UC Efetuar Pedido (V(G) = 8)
+title GFC - Finalização do Pedido (checkout HTTP) - V(G) = 13
 
 skinparam shadowing false
 skinparam defaultFontName Arial
@@ -9,58 +9,83 @@ skinparam circle {
   BorderColor #333333
 }
 
-circle "1" as N1
-circle "2" as N2 #FFF3CD
-circle "3" as N3
-circle "4" as N4
-circle "5" as N5 #FFF3CD
-circle "6" as N6
-circle "7" as N7
-circle "8" as N8
-circle "9" as N9
-circle "10" as N10
-circle "11" as N11 #FFF3CD
-circle "12" as N12
-circle "13" as N13
-circle "14" as N14
-circle "15" as N15 #FFF3CD
-circle "16" as N16
-circle "17" as N17
-circle "18" as N18 #FFF3CD
-circle "19" as N19
-circle "20" as N20
-circle "21" as N21 #E0E0E0
+circle "1\nInício" as N1
+circle "2\nAutenticado?" as N2 #FFF3CD
+circle "3\n401" as N3
+circle "4\nCarrinho vazio?" as N4 #FFF3CD
+circle "5\nCarrinho vazio" as N5
+circle "6\nEndereço e chave válidos?" as N6 #FFF3CD
+circle "7\n400" as N7
+circle "8\nChave já usada?" as N8 #FFF3CD
+circle "9\nRetornar pedido" as N9
+circle "10\nPagamento cartão?" as N10 #FFF3CD
+circle "11\nCartão pertence\nao cliente?" as N11 #FFF3CD
+circle "12\n404" as N12
+circle "13\nIniciar transação\ne carregar dados" as N13
+circle "14\nRegião Sudeste?" as N14 #FFF3CD
+circle "15\nFrete 5%" as N15
+circle "16\nFrete 10%" as N16
+circle "17\nPerfil do cliente" as N17 #FFF3CD
+circle "18\nNONE: 0%" as N18
+circle "19\nBRONZE: 3%" as N19
+circle "20\nSILVER: 5%" as N20
+circle "21\nGOLD: 10%" as N21
+circle "22\nEstoque suficiente?" as N22 #FFF3CD
+circle "23\nRollback / 409" as N23
+circle "24\nSaldo >= total?" as N24 #FFF3CD
+circle "25\nPagamento aprovado" as N25
+circle "26\nPagamento recusado" as N26
+circle "27\nAtualizar pedido,\nlimpar carrinho e commit" as N27
+circle "28\nRetornar resultado" as N28
+circle "29\nFim" as N29
 
 N1 --> N2
-N2 --> N3 : V (vazio)
-N2 --> N4 : F
-N3 --> N21
-N4 --> N5
-N5 --> N6 : < 1 ano
-N5 --> N7 : 1 a 3 anos
-N5 --> N8 : 3 a 5 anos
-N5 --> N9 : > 5 anos
-N6 --> N10
-N7 --> N10
-N8 --> N10
-N9 --> N10
-N10 --> N11
-N11 --> N12 : V (Sudeste)
-N11 --> N13 : F (outras)
-N12 --> N14
+N2 --> N3 : Não
+N2 --> N4 : Sim
+N3 --> N29
+N4 --> N5 : Sim
+N4 --> N6 : Não
+N5 --> N29
+N6 --> N7 : Não
+N6 --> N8 : Sim
+N7 --> N29
+N8 --> N9 : Sim
+N8 --> N10 : Não
+N9 --> N29
+N10 --> N11 : Sim
+N10 --> N13 : Não (Pix)
+N11 --> N12 : Não
+N11 --> N13 : Sim
+N12 --> N29
 N13 --> N14
-N14 --> N15
-N15 --> N16 : Cartão
-N15 --> N17 : Pix
-N16 --> N18
-N17 --> N18
-N18 --> N19 : V (autorizado)
-N18 --> N20 : F (não autorizado)
-N19 --> N21
-N20 --> N21
+N14 --> N15 : Sim
+N14 --> N16 : Não
+N15 --> N17
+N16 --> N17
+N17 --> N18 : Menos de 1 ano
+N17 --> N19 : 1 a menos de 3 anos
+N17 --> N20 : 3 a 5 anos
+N17 --> N21 : Mais de 5 anos
+N18 --> N22
+N19 --> N22
+N20 --> N22
+N21 --> N22
+N22 --> N23 : Não
+N22 --> N24 : Sim
+N23 --> N29
+N24 --> N25 : Sim
+N24 --> N26 : Não
+N25 --> N27
+N26 --> N27
+N27 --> N28
+N28 --> N29
 
 legend right
-  Nós amarelos = predicados (2, 5, 11, 15, 18)
-  Nó 21 = nó final (estado Finalizado)
+  Nós amarelos = nós de decisão.
+  O nó 17 possui quatro alternativas (classificação do cliente).
+  N = 29 nós; E = 40 arestas.
+  V(G) = E - N + 2 = 40 - 29 + 2 = 13.
+  O GFC representa o checkout HTTP; a rotina posterior
+  de cancelamento de 48h está no diagrama de atividades.
 endlegend
 @enduml

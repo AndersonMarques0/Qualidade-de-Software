@@ -1,100 +1,81 @@
-import { Types } from "mongoose";
+import { Types, type ClientSession } from "mongoose";
 import { CartModel } from "../models/cart.model.js";
 
 export class CartRepository {
-  findByCustomer(customerId: string) {
-    return CartModel.findOne({ customerId })
-      .populate("items.bookId");
+  findByCustomer(customerId: string, session?: ClientSession) {
+    const query = CartModel.findOne({ customerId }).populate("items.bookId");
+    return session ? query.session(session) : query;
   }
 
   findRawByCustomer(customerId: string) {
     return CartModel.findOne({ customerId });
   }
 
-  async addItem(
-    customerId: string,
-    bookId: string,
-    quantity: number
-  ) {
+  async quantityOfBook(customerId: string, bookId: string): Promise<number> {
+    const cart = await CartModel.findOne({ customerId }).select("items");
+    const item = cart?.items.find(
+      (entry) => entry.bookId.toString() === bookId,
+    );
+    return item?.quantity ?? 0;
+  }
+
+  async addItem(customerId: string, bookId: string, quantity: number) {
     let cart = await CartModel.findOne({ customerId });
 
     if (!cart) {
       return CartModel.create({
         customerId: new Types.ObjectId(customerId),
-        items: [
-          {
-            bookId: new Types.ObjectId(bookId),
-            quantity
-          }
-        ]
+        items: [{ bookId: new Types.ObjectId(bookId), quantity }],
       });
     }
 
     const found = cart.items.find(
-      (item) => item.bookId.toString() === bookId
+      (item) => item.bookId.toString() === bookId,
     );
 
     if (found) {
       found.quantity += quantity;
     } else {
-      cart.items.push({
-        bookId: new Types.ObjectId(bookId),
-        quantity
-      });
+      cart.items.push({ bookId: new Types.ObjectId(bookId), quantity });
     }
 
     await cart.save();
-
     return cart;
   }
 
-  async updateItem(
-    customerId: string,
-    bookId: string,
-    quantity: number
-  ) {
+  async updateItem(customerId: string, bookId: string, quantity: number) {
     const cart = await CartModel.findOne({ customerId });
-
     if (!cart) return null;
 
     const item = cart.items.find(
-      (entry) => entry.bookId.toString() === bookId
+      (entry) => entry.bookId.toString() === bookId,
     );
-
     if (!item) return null;
 
     item.quantity = quantity;
-
     await cart.save();
-
     return cart;
   }
 
-  async removeItem(
-    customerId: string,
-    bookId: string
-  ) {
-    const cart = await CartModel.findOne({ customerId });
+  async removeItem(customerId: string, bookId: string): Promise<boolean> {
+    const result = await CartModel.updateOne(
+      {
+        customerId,
+        "items.bookId": new Types.ObjectId(bookId),
+      },
+      {
+        $pull: { items: { bookId: new Types.ObjectId(bookId) } },
+      },
+    );
 
-    if (!cart) return null;
-
-    // Percorre o array de trás para frente para remover
-    // os itens sem comprometer os índices restantes.
-    for (let i = cart.items.length - 1; i >= 0; i--) {
-      if (cart.items[i].bookId.toString() === bookId) {
-        cart.items.splice(i, 1);
-      }
-    }
-
-    await cart.save();
-
-    return cart;
+    return result.modifiedCount > 0;
   }
 
-  clear(customerId: string) {
+  clear(customerId: string, session?: ClientSession) {
     return CartModel.findOneAndUpdate(
       { customerId },
-      { $set: { items: [] } }
+      { $set: { items: [] } },
+      { new: true, session },
     );
   }
 }

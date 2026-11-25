@@ -14,6 +14,22 @@ export interface PricingResult {
 }
 const money = (value: number) =>
   Math.round((value + Number.EPSILON) * 100) / 100;
+// Tempo de vínculo em anos: anos completos de calendário + fração do ano corrente
+// (aniversário -> próximo aniversário). Evita o erro de dividir por 365,25 dias, que
+// fazia "1 ano" (365 dias) valer 0,9993 e ficar sem desconto.
+export function yearsSince(since: Date, now: Date = new Date()): number {
+  if (since.getTime() >= now.getTime()) return 0;
+  const anniversary = (n: number) => {
+    const date = new Date(since);
+    date.setUTCFullYear(since.getUTCFullYear() + n);
+    return date.getTime();
+  };
+  let full = now.getUTCFullYear() - since.getUTCFullYear();
+  if (anniversary(full) > now.getTime()) full -= 1;
+  const start = anniversary(full);
+  const end = anniversary(full + 1);
+  return full + (now.getTime() - start) / (end - start);
+}
 export function getCustomerProfile(years: number): {
   profile: CustomerProfile;
   discountRate: number;

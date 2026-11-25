@@ -12,83 +12,130 @@ skinparam swimlaneTitleFontStyle bold
 
 |Cliente|
 start
-:1. Solicitar visualização do carrinho;
+:1. Solicitar acesso ao sistema;
+:2. Informar credenciais;
 
 |Sistema da Livraria|
-:2. Exibir livros adicionados e quantidades;
+:Validar credenciais e emitir token JWT;
+if (Autenticação válida?) then (não)
+  #FFD9D9:Exceção: informar credenciais inválidas;
+  stop
+else (sim)
+endif
 
+|Cliente|
+:3. Solicitar visualização do carrinho;
+
+|Sistema da Livraria|
+:Validar token e consultar carrinho;
+:Exibir livros adicionados e quantidades;
 if (Carrinho vazio?) then (sim)
-  #FFD9D9:Exceção 2: informar que não é possível\nprosseguir sem itens no carrinho;
+  #FFD9D9:Exceção: informar que não é possível prosseguir sem itens;
   stop
 else (não)
 endif
 
 |Cliente|
-:3. Confirmar pedido com base nas informações exibidas;
+:4. Informar endereço de entrega;
 
 |Sistema da Livraria|
-:4. Apresentar formulário de autenticação\ne identificar perfil do cliente;
-
-if (RN01: tempo de vínculo?) then (menos de 1 ano)
-  :Sem desconto (0%);
-elseif (1 a 3 anos) then (Bronze)
-  :Perfil Bronze - desconto de 3%;
-elseif (3 a 5 anos) then (Prata)
-  :Perfil Prata - desconto de 5%;
-else (mais de 5 anos)
-  :Perfil Ouro - desconto de 10%;
+:Validar CEP e UF;
+if (Endereço válido?) then (não)
+  #FFD9D9:Informar dados de entrega inválidos;
+  stop
+else (sim)
 endif
 
-|Cliente|
-:5. Informar dados do endereço de entrega e confirmar;
-
-|Sistema de Frete|
-if (RN02: região de entrega é Sudeste?) then (sim)
-  :Frete = 5% sobre o valor do pedido;
+|Sistema de Frete (simulado)|
+:Identificar região pela UF;
+if (RN02: região Sudeste?) then (sim)
+  :Frete = 5% do subtotal;
 else (não)
-  :Frete = 10% sobre o valor do pedido;
+  :Frete = 10% do subtotal;
 endif
 
 |Sistema da Livraria|
-:6. Exibir valor do frete;
+:Identificar perfil pelo tempo de vínculo (RN01);
+note right
+  Menos de 1 ano: NONE (0%)
+  1 a menos de 3 anos: BRONZE (3%)
+  3 a 5 anos: SILVER (5%)
+  Mais de 5 anos: GOLD (10%)
+end note
+:Exibir subtotal, desconto, frete e total;
 
 |Cliente|
-:7. Selecionar forma de pagamento e preencher dados;
+:5. Selecionar forma de pagamento;
+:6. Confirmar pedido;
+:Enviar Idempotency-Key junto à requisição;
 
 |Sistema da Livraria|
-:8. Exibir total a pagar\n(subtotal - desconto + frete)\ne disponibilizar finalização do pedido;
-
-|Cliente|
-:9. Confirmar pedido;
-
-|Sistema da Livraria|
-if (RN03: forma de pagamento?) then (cartão de crédito)
-  |Sistema de Cartão|
-  :Autorizar pagamento com cartão de crédito;
+:Verificar se a chave já foi processada;
+if (Pedido existente para a chave?) then (sim)
+  :Retornar o pedido já existente;
+  stop
+else (não)
+endif
+if (Pagamento por cartão?) then (sim)
+  :Validar se o cartão pertence ao cliente;
+  if (Cartão válido?) then (não)
+    #FFD9D9:Informar cartão inválido ou não encontrado;
+    stop
+  else (sim)
+  endif
 else (Pix)
-  |Sistema de Banco|
-  :Processar pagamento via Pix;
+  :Manter Pix como forma selecionada;
+endif
+
+:Iniciar transação MongoDB;
+:Consultar novamente cliente e carrinho;
+:Calcular valores do pedido;
+:Reservar estoque com atualização condicional;
+if (Estoque suficiente?) then (não)
+  :Abortar transação (rollback);
+  #FFD9D9:Informar estoque insuficiente;
+  stop
+else (sim)
+endif
+:Registrar pedido e chave de idempotência;
+
+|Sistema de Banco (simulado)|
+:Verificar saldo e tentar débito dentro da transação;
+if (Saldo >= total?) then (sim)
+  :Autorizar pagamento;
+else (não)
+  :Recusar pagamento sem debitar saldo;
 endif
 
 |Sistema da Livraria|
 if (Pagamento autorizado?) then (sim)
-  :10. Registrar pedido com status Confirmado (RN04);
-  :Destruir itens do carrinho;
-  :Exibir confirmação do pedido;
+  :Atualizar pedido para CONFIRMED;
 else (não)
-  #FFD9D9:Exceção 9: informar pagamento não autorizado;
-  :Pedido permanece Em processamento,\ncancelável após 2 dias;
+  :Manter pedido em PROCESSING;
+  :Definir prazo de cancelamento de 48 horas;
 endif
+:Limpar carrinho dentro da transação;
+:Confirmar transação (commit);
+:Exibir resultado do pedido;
 
+|Sistema da Livraria|
+:Rotina automática verifica pedidos vencidos;
+if (Pagamento recusado e prazo >= 48h?) then (sim)
+  :Iniciar transação de cancelamento;
+  :Alterar pedido para CANCELLED;
+  :Devolver estoque na mesma transação;
+  :Confirmar transação;
+else (não)
+endif
+:Avançar estados CONFIRMED -> DELIVERED -> FINISHED
+e CANCELLED -> FINISHED;
 stop
 
-legend right
-  RN04 - Estados:
-  Pedido criado (inicial), Em processamento,
-  Confirmado, Cancelado, Entregue e Finalizado (final).
-
-  Cancelado e Entregue ocorrem após o término
-  do caso de uso.
-endlegend
+note right
+  As operações de pedido, estoque, saldo simulado
+  e carrinho são confirmadas ou revertidas juntas.
+  Frete e autorização bancária são simulações internas;
+  não há integração com provedores externos reais.
+end note
 
 @enduml

@@ -1,4 +1,13 @@
 import mongoose from "mongoose";
 import { env } from "./env.js";
-export async function connectDatabase():Promise<void>{await mongoose.connect(env.MONGODB_URI);console.log("MongoDB conectado.");}
-export async function disconnectDatabase():Promise<void>{await mongoose.disconnect();}
+import { OrderModel } from "../models/order.model.js";
+
+export async function connectDatabase(): Promise<void> {
+  await mongoose.connect(env.MONGODB_URI);
+  await OrderModel.init();
+  console.log("MongoDB conectado.");
+}
+
+export async function disconnectDatabase(): Promise<void> {
+  await mongoose.disconnect();
+}

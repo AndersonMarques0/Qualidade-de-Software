@@ -6,6 +6,7 @@ import {
   PaymentStatus,
   Region,
 } from "../domain/enums.js";
+
 const item = new Schema(
   {
     bookId: { type: Schema.Types.ObjectId, ref: "Book", required: true },
@@ -15,6 +16,7 @@ const item = new Schema(
   },
   { _id: false },
 );
+
 const address = new Schema(
   {
     postalCode: { type: String, required: true },
@@ -27,6 +29,7 @@ const address = new Schema(
   },
   { _id: false },
 );
+
 const schema = new Schema(
   {
     customerId: {
@@ -34,6 +37,11 @@ const schema = new Schema(
       ref: "Customer",
       required: true,
       index: true,
+    },
+    idempotencyKey: {
+      type: String,
+      required: true,
+      trim: true,
     },
     items: { type: [item], required: true },
     region: { type: String, enum: Object.values(Region), required: true },
@@ -64,4 +72,14 @@ const schema = new Schema(
   },
   { timestamps: true },
 );
+
+schema.index({ status: 1, cancellationDueAt: 1 });
+schema.index(
+  { customerId: 1, idempotencyKey: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { idempotencyKey: { $type: "string" } },
+  },
+);
+
 export const OrderModel = model("Order", schema);

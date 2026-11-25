@@ -9,6 +9,7 @@ skinparam linetype ortho
 
 package "Domain" {
   enum CustomerProfile {
+    NONE
     BRONZE
     SILVER
     GOLD
@@ -45,7 +46,16 @@ package "Domain" {
 
   class OrderStatusService {
     +assertOrderTransition(current: OrderStatus, next: OrderStatus): void
+    +AUTO_ADVANCE_STEPS: [OrderStatus, OrderStatus][]
   }
+
+  class RegionService {
+    +getRegionByState(state: string): Region
+  }
+  note right of RegionService
+    Valida as 27 UFs brasileiras
+    antes de determinar a região.
+  end note
 
   interface PricingInput {
     +subtotal: number
@@ -63,7 +73,8 @@ package "Domain" {
   }
 
   class PricingService {
-    +getCustomerProfile(years: number): PricingResult
+    +yearsSince(since: Date, now: Date): number
+    +getCustomerProfile(years: number): object
     +calculatePricing(input: PricingInput): PricingResult
   }
 
@@ -71,11 +82,10 @@ package "Domain" {
     +method: PaymentMethod
     +amount: number
     +customerId: string
-    +cardId: string
   }
 
   interface CheckoutInput {
-    +region: Region
+    +region: Region [0..1]
     +paymentMethod: PaymentMethod
     +cardId: string
     +deliveryAddress: object
@@ -115,8 +125,14 @@ package "Models / Mongoose Schemas" {
     +bankId: ObjectId
     +holderName: string
     +last4: string
-    +creditLimit: number
-    +availableLimit: number
+    +createdAt: Date
+    +updatedAt: Date
+  }
+
+  class Account {
+    +_id: ObjectId
+    +customerId: ObjectId
+    +balanceCents: number
     +createdAt: Date
     +updatedAt: Date
   }
@@ -137,6 +153,7 @@ package "Models / Mongoose Schemas" {
   class Order {
     +_id: ObjectId
     +customerId: ObjectId
+    +idempotencyKey: string
     +items: OrderItem[]
     +region: Region
     +customerProfile: CustomerProfile
@@ -182,7 +199,9 @@ package "Application Services" {
   class BankService {
     +list(): Promise<Bank[]>
     +create(input: object): Promise<Bank>
-    +authorize(customerId: string, cardId: string, amount: number): Promise<object>
+    +getAccount(customerId: string): Promise<object>
+    +deposit(customerId: string, amount: number): Promise<object>
+    +authorize(customerId: string, amount: number, method: PaymentMethod, session?: ClientSession): Promise<object>
   }
 
   class CardService {
@@ -205,15 +224,17 @@ package "Application Services" {
   }
 
   class PaymentService {
-    +pay(input: PaymentInput): Promise<object>
+    +pay(input: PaymentInput, session?: ClientSession): Promise<object>
   }
 
   class OrderService {
-    +preview(customerId: string, region: Region): Promise<PricingResult>
-    +checkout(customerId: string, input: CheckoutInput): Promise<Order>
+    +preview(customerId: string, region: Region, now: Date): Promise<PricingResult>
+    +checkout(customerId: string, input: CheckoutInput, idempotencyKey: string): Promise<Order>
     +list(customerId: string): Promise<Order[]>
     +get(customerId: string, id: string): Promise<Order>
-    +cancelExpired(): Promise<number>
+    +cancelExpired(now: Date): Promise<number>
+    +advanceOrders(): Promise<number>
+    +processOrders(now: Date): Promise<object>
   }
 }
 
@@ -224,71 +245,94 @@ package "Repositories" {
     +create(data: object): Promise<Bank>
   }
 
+  class AccountRepository {
+    +findByCustomer(customerId: string): Promise<Account>
+    +deposit(customerId: string, cents: number): Promise<Account>
+    +debit(customerId: string, cents: number, session?: ClientSession): Promise<boolean>
+  }
+
   class BookRepository {
     +findAll(): Promise<Book[]>
     +findById(id: string): Promise<Book>
-    +decreaseStock(id: string, quantity: number): Promise<boolean>
-    +increaseStock(id: string, quantity: number): Promise<boolean>
+    +decreaseStock(id: string, quantity: number, session?: ClientSession): Promise<boolean>
+    +increaseStock(id: string, quantity: number, session?: ClientSession): Promise<boolean>
   }
 
   class CardRepository {
     +create(data: object): Promise<Card>
     +findByCustomer(customerId: string): Promise<Card[]>
     +findByIdForCustomer(cardId: string, customerId: string): Promise<Card>
-    +reserveLimit(cardId: string, customerId: string, amount: number): Promise<boolean>
   }
 
   class CartRepository {
-    +findByCustomer(customerId: string): Promise<Cart>
+    +findByCustomer(customerId: string, session?: ClientSession): Promise<Cart>
     +findRawByCustomer(customerId: string): Promise<Cart>
+    +quantityOfBook(customerId: string, bookId: string): Promise<number>
     +addItem(customerId: string, bookId: string, quantity: number): Promise<Cart>
     +updateItem(customerId: string, bookId: string, quantity: number): Promise<Cart>
-    +removeItem(customerId: string, bookId: string): Promise<Cart>
-    +clear(customerId: string): Promise<void>
+    +removeItem(customerId: string, bookId: string): Promise<boolean>
+    +clear(customerId: string, session?: ClientSession): Promise<Cart>
   }
 
   class CustomerRepository {
     +findByEmail(email: string): Promise<Customer>
-    +findById(id: string): Promise<Customer>
+    +findById(id: string, session?: ClientSession): Promise<Customer>
     +create(data: object): Promise<Customer>
   }
 
+  interface CreateOrderData {
+    +customerId: string
+    +idempotencyKey: string
+    +items: OrderItem[]
+    +subtotal: number
+    +discount: number
+    +shipping: number
+    +total: number
+  }
+
   class OrderRepository {
-    +create(data: object): Promise<Order>
+    +create(data: CreateOrderData, session: ClientSession): Promise<Order>
+    +findByCustomerAndIdempotencyKey(customerId: string, key: string, session?: ClientSession): Promise<Order>
     +findByCustomer(customerId: string): Promise<Order[]>
     +findByIdForCustomer(orderId: string, customerId: string): Promise<Order>
     +updatePayment(orderId: string, data: object): Promise<Order>
-    +findExpired(): Promise<Order[]>
-    +cancelOneIfExpired(orderId: string): Promise<Order>
+    +findExpired(now: Date): Promise<Order[]>
+    +cancelOneIfExpired(orderId: string, now: Date, session: ClientSession): Promise<Order>
+    +advanceAll(from: OrderStatus, to: OrderStatus): Promise<number>
   }
 }
 
 ' Dependências entre serviços e repositórios
 AuthService --> CustomerRepository
 BankService --> BankRepository
-BankService --> CardRepository
+BankService --> AccountRepository
 CardService --> CardRepository
 CardService --> BankRepository
 CartService --> CartRepository
 CartService --> BookRepository
 CatalogService --> BookRepository
 PaymentService --> BankService
-PaymentService --> CardRepository
 OrderService --> OrderRepository
 OrderService --> CartRepository
 OrderService --> BookRepository
 OrderService --> PaymentService
 OrderService --> PricingService
 OrderService --> OrderStatusService
+OrderService --> RegionService
 
 ' Relacionamentos persistidos (referências ObjectId do Mongoose)
 Card "0..*" --> "1" Customer : customerId
 Card "0..*" --> "1" Bank : bankId
-Cart "0..*" --> "1" Customer : customerId
+Account "0..1" --> "1" Customer : customerId
+Cart "0..1" --> "1" Customer : customerId
 CartItem "0..*" --> "1" Book : bookId
 Order "0..*" --> "1" Customer : customerId
 Order "0..*" --> "0..1" Card : cardId
 OrderItem "0..*" --> "1" Book : bookId
+
+' Checkout usa uma ClientSession para transacionar pedido, estoque, saldo simulado e carrinho.
+' O índice único (customerId, idempotencyKey) protege reenvios do checkout.
+' CreateOrderData representa os campos necessários para registrar o pedido.
 
 ' Composição de subdocumentos embutidos
 Cart "1" *-- "0..*" CartItem : items

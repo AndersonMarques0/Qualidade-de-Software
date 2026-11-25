@@ -5,7 +5,8 @@ const transitions: Record<OrderStatus, OrderStatus[]> = {
   [OrderStatus.PROCESSING]: [OrderStatus.CONFIRMED, OrderStatus.CANCELLED],
   [OrderStatus.CONFIRMED]: [OrderStatus.DELIVERED, OrderStatus.CANCELLED],
   [OrderStatus.DELIVERED]: [OrderStatus.FINISHED],
-  [OrderStatus.CANCELLED]: [],
+  // Pedido cancelado também termina em FINISHED (estado final do caso de uso).
+  [OrderStatus.CANCELLED]: [OrderStatus.FINISHED],
   [OrderStatus.FINISHED]: [],
 };
 export function assertOrderTransition(
@@ -15,3 +16,10 @@ export function assertOrderTransition(
   if (!transitions[current].includes(next))
     throw new AppError(`Transição inválida: ${current} -> ${next}`, 409);
 }
+// Avanço automático. A ordem vai do estado mais avançado para o menos avançado,
+// assim cada pedido anda apenas UM passo por execução da rotina.
+export const AUTO_ADVANCE_STEPS: ReadonlyArray<readonly [OrderStatus, OrderStatus]> = [
+  [OrderStatus.DELIVERED, OrderStatus.FINISHED],
+  [OrderStatus.CANCELLED, OrderStatus.FINISHED],
+  [OrderStatus.CONFIRMED, OrderStatus.DELIVERED],
+];
