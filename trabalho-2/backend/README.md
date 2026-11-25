@@ -95,7 +95,7 @@ Envie o token recebido nas rotas protegidas: `Authorization: Bearer SEU_TOKEN`.
 ```json
 {"state":"SP"}
 ```
-A região do frete é definida pelo **estado (UF)**: SP, RJ, MG e ES são Sudeste (frete 5%); os demais estados, 10%. Por compatibilidade, a prévia ainda aceita `{"region":"SOUTHEAST"}` ou `{"region":"OTHER"}`.
+A região do frete é definida pelo estado de entrega. A API aceita tanto a **sigla (UF)** quanto o **nome completo** do estado, normalizando a entrada: SP, RJ, MG e ES são Sudeste (frete 5%); os demais estados, 10%. Por compatibilidade, a prévia ainda aceita `{"region":"SOUTHEAST"}` ou `{"region":"OTHER"}`.
 
 ### Finalizar pedido
 `POST /api/orders`
@@ -125,7 +125,7 @@ curl http://localhost:3333/api/account -H "Authorization: Bearer SEU_TOKEN"
 Cliente sem conta tem saldo 0. O saldo é guardado em centavos (inteiro) e o débito é atômico: duas compras simultâneas nunca gastam o mesmo saldo duas vezes.
 
 ## 6. Regras de negócio implementadas
-- **RN01:** menos de 1 ano: sem desconto; de 1 até menos de 3: Bronze 3%; de 3 até 5 inclusive: Prata 5%; acima de 5: Ouro 10%. O enunciado sobrepõe os limites de 3 anos e não esclarece exatamente 5 anos; esta é a interpretação adotada.
+- **RN01:** menos de 1 ano: sem desconto; de 1 até antes de 3 anos: Bronze 3%; de 3 até 5 anos, inclusive: Prata 5%; acima de 5 anos: Ouro 10%. Portanto, exatamente 5 anos ainda pertence ao perfil Prata.
 - **RN02:** Sudeste 5% do subtotal; demais regiões 10%.
 - **RN03:** cartão e Pix. Integração é simulada: o banco autoriza se `saldo >= valor da compra`.
 - **Tempo de vínculo:** calculado por calendário (anos completos + fração), não por 365,25 dias. Assim "1 ano" exato já é Bronze e "5 anos" exatos é Prata.
@@ -140,19 +140,16 @@ npm run test:coverage
 npm run typecheck
 npm run build
 ```
-Os testes de integração usam `MongoMemoryReplSet` (replica set em memória), necessário para exercitar transações. Eles não acessam seu Atlas e não exigem MongoDB instalado localmente (o primeiro `npm test` baixa o binário do MongoDB).
+Os testes de integração usam `MongoMemoryReplSet` (replica set em memória), necessário para exercitar as transações do checkout. Eles não acessam o MongoDB Atlas. Na primeira execução, `mongodb-memory-server` pode precisar baixar o binário do MongoDB.
 
 | Arquivo | Casos de teste |
 |---|---|
-| `tests/integration/cart-auth.test.ts` | CT01, CT02, CT03, estoque acumulado e remoção de item inexistente |
-| `tests/integration/catalog-validation.test.ts` | IDs inválidos, inexistentes e existentes no catálogo |
-| `tests/unit/pricing.test.ts` | CT04–CT09 (regras puras, todos os valores-limite) |
-| `tests/integration/pricing-order.test.ts` | CT04–CT09 pelo serviço/HTTP |
-| `tests/integration/payment.test.ts` | CT10–CT13, conta/saldo e idempotência do checkout |
-| `tests/integration/cancellation.test.ts` | CT14–CT16 |
-| `tests/integration/lifecycle.test.ts` | CONFIRMED→DELIVERED→FINISHED e CANCELLED→FINISHED |
+| `tests/integration/cart-order.test.ts` | CT01–CT03: quantidades inválidas, 1 livro e quantidades maiores que 1; testa 25 unidades disponíveis (LSV) e 30 solicitadas com apenas 25 em estoque (LSI) |
+| `tests/unit/pricing.test.ts` | CT04–CT09: regras puras de faixa de relacionamento, limites de 1, 3 e 5 anos, regiões e percentuais de frete |
+| `tests/integration/pricing-order.test.ts` | CT04–CT09: valida as mesmas regras pela prévia do pedido e pela entrada HTTP |
+| `tests/integration/payment.test.ts` | CT10–CT13: cartão e Pix com saldo suficiente ou insuficiente |
 
-**Testes com tempo:** nenhum teste espera horas ou anos. O relógio é injetado: `OrderService.preview(..., now)` e `cancelExpired(now)` recebem o "agora", e os testes usam uma data fixa (`2026-11-23`), então os limites de 1/3/5 anos e de 48h são exatos e determinísticos.
+Os testes de tempo são determinísticos: `pricing.test.ts` usa uma data de referência fixa (`2026-11-23`) e verifica as datas de aniversário e os dias imediatamente anteriores/posteriores, sem esperar anos reais.
 
 ## 8. Organização
 - `config`: variáveis e conexão.

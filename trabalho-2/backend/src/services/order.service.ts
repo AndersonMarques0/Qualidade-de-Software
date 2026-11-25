@@ -118,7 +118,6 @@ export class OrderService {
     input: CheckoutInput,
     idempotencyKey: string,
   ) {
-    // Reenvios da mesma operação retornam o pedido já criado, sem novo débito.
     const existing = await orders.findByCustomerAndIdempotencyKey(
       customerId,
       idempotencyKey,
@@ -141,7 +140,6 @@ export class OrderService {
 
     try {
       await session.withTransaction(async () => {
-        // Verifica novamente dentro da transação para lidar com reenvios concorrentes.
         const previous = await orders.findByCustomerAndIdempotencyKey(
           customerId,
           idempotencyKey,
@@ -164,7 +162,6 @@ export class OrderService {
           session,
         );
 
-        // A reserva de estoque usa atualização condicional e participa da transação.
         for (const item of preview.items) {
           const reserved = await books.decreaseStock(
             item.bookId,
@@ -206,7 +203,6 @@ export class OrderService {
           session,
         );
 
-        // O banco simulado está no mesmo MongoDB: o débito também é transacional.
         const payment = await payments.pay(
           {
             method: input.paymentMethod,
@@ -300,7 +296,6 @@ export class OrderService {
 
       try {
         await session.withTransaction(async () => {
-          // O callback pode ser repetido pelo driver; reinicia a flag a cada tentativa.
           didCancel = false;
           const order = await orders.cancelOneIfExpired(
             candidate.id,

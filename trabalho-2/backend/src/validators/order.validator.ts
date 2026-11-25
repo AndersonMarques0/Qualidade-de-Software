@@ -1,11 +1,11 @@
 import { z } from "zod";
 import { PaymentMethod, Region } from "../domain/enums.js";
-import { BRAZILIAN_STATES } from "../domain/services/region.service.js";
+import { BRAZILIAN_STATES, normalizeBrazilianState } from "../domain/services/region.service.js";
 
 const stateSchema = z
   .string()
   .trim()
-  .transform((state) => state.toUpperCase())
+  .transform((state) => normalizeBrazilianState(state) ?? state.toUpperCase())
   .pipe(z.enum(BRAZILIAN_STATES));
 
 const postalCodeSchema = z
