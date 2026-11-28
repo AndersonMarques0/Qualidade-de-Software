@@ -118,42 +118,54 @@ export class OrderService {
     input: CheckoutInput,
     idempotencyKey: string,
   ) {
+    // bloco 1
     const existing = await orders.findByCustomerAndIdempotencyKey(
       customerId,
       idempotencyKey,
     );
+    // bloco 2
     if (existing) {
+      // bloco 3
       return {
         order: existing,
         message: checkoutMessage(existing.paymentStatus),
       };
     }
 
+    // bloco 4
     if (input.paymentMethod === PaymentMethod.CREDIT_CARD) {
-      if (!input.cardId) throw new AppError("Informe o cartão (cardId).");
+      // bloco 5
+      if (!input.cardId)
+        // bloco 6
+        throw new AppError("Informe o cartão (cardId).");
+      // bloco 7
       await cardsService.assertOwned(customerId, input.cardId);
     }
-
+    // bloco 8
     const region = getRegionByState(input.deliveryAddress.state);
     const session = await mongoose.startSession();
     let response: { order: unknown; message: string } | undefined;
 
+    // bloco 9
     try {
       await session.withTransaction(async () => {
+        // bloco 10
         const previous = await orders.findByCustomerAndIdempotencyKey(
           customerId,
           idempotencyKey,
           session,
         );
 
+        // bloco 11
         if (previous) {
+          // bloco 12
           response = {
             order: previous,
             message: checkoutMessage(previous.paymentStatus),
           };
           return;
         }
-
+        // bloco 13
         const now = new Date();
         const { preview } = await this.loadPreviewData(
           customerId,
@@ -162,20 +174,24 @@ export class OrderService {
           session,
         );
 
+        // bloco 14
         for (const item of preview.items) {
+          // bloco 15
           const reserved = await books.decreaseStock(
             item.bookId,
             item.quantity,
             session,
           );
+          // bloco 16
           if (!reserved) {
+            // bloco 17
             throw new AppError(
               "Estoque insuficiente para um ou mais livros.",
               409,
             );
           }
         }
-
+        // bloco 18
         const createdOrder = await orders.create(
           {
             customerId,
@@ -230,45 +246,55 @@ export class OrderService {
           },
           session,
         );
-
+        // bloco 19
         if (!updatedOrder) {
+          // bloco 20
           throw new Error(
             "Não foi possível atualizar o pedido após o pagamento.",
           );
         }
 
+        // bloco 21
         const clearedCart = await carts.clear(customerId, session);
+        // bloco 22
         if (!clearedCart) {
+          // bloco 23
           throw new Error("Não foi possível limpar o carrinho.");
         }
-
+        // bloco 24
         response = {
           order: updatedOrder,
           message: checkoutMessage(payment.status),
         };
       });
     } catch (error) {
-      // Duas requisições com a mesma chave podem disputar o índice único.
+      // bloco 25
       if (isDuplicateKeyError(error)) {
+        // bloco 26
         const duplicate = await orders.findByCustomerAndIdempotencyKey(
           customerId,
           idempotencyKey,
         );
+        // bloco 27
         if (duplicate) {
+          // bloco 28
           return {
             order: duplicate,
             message: checkoutMessage(duplicate.paymentStatus),
           };
         }
       }
+      // bloco 29
       throw error;
     } finally {
       await session.endSession();
     }
-
+    // bloco 30
     if (!response) {
+      // bloco 31
       throw new Error("O checkout foi encerrado sem produzir um resultado.");
     }
+    // bloco 32
     return response;
   }
 

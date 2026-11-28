@@ -33,8 +33,9 @@
     "@vitest/coverage-v8": "^5.1.1",
     "mongodb-memory-server": "^10.2.3",
     "supertest": "^7.1.4",
+    "ts-morph": "^28.0.0",
     "tsuml2": "^0.11.0",
-    "tsx": "^4.20.6",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "vitest": "^5.1.1"
   }
